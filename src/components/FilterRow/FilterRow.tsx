@@ -3,42 +3,81 @@ import React, { Component } from "react";
 
 import "./FilterRow.scss";
 
-import { Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  Dropdown,
+  DropdownButton,
+  Form,
+  Row
+} from "react-bootstrap";
 // import Color from "./Color/Color";
 // import SelectColor from "./Color/SelectColor";
 
 import { store } from "../..";
-import { fetchColorsIfNeeded } from "../../actions";
+import { fetchTypesIfNeeded, selectPokemonType } from "../../actions";
 
 import { ThunkDispatch } from "redux-thunk";
+import { Type } from "../../models/Pokemon.model";
 
 interface PropTypes {
-  colors?: any[];
+  types?: Type[];
+  selectedType?: Type;
 }
 class FilterRow extends Component<PropTypes> {
-  colors: any;
+  typeItemSelected(index: number) {
+    const types = this.props.types || [];
+    const selectedType = types[index];
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(
+      selectPokemonType(selectedType)
+    );
+  }
   public render() {
+    const { types, selectedType } = this.props;
     return (
       <section className="filterRow">
         <Container>
           <Form.Row>
-            <Col xs={12} sm={6} md={3}>
-              <Form.Group>
-                <Form.Label>Filter by type...</Form.Label>
-                <Form.Control as="select" />
-              </Form.Group>
+            <Col className="px-3" xs={12} sm={6} md={4}>
+              <DropdownButton
+                className="typeBtn"
+                size="lg"
+                variant="light"
+                title={selectedType ? selectedType.name : "Filter by type..."}
+              >
+                <Dropdown.Item
+                  onSelect={() => {
+                    this.typeItemSelected(-1);
+                  }}
+                >
+                  Filter by type...
+                </Dropdown.Item>
+                {types &&
+                  types.map((type: Type, index: number) => (
+                    <Dropdown.Item
+                      key={index.toString()}
+                      onSelect={() => {
+                        this.typeItemSelected(index);
+                      }}
+                    >
+                      {type.name}
+                    </Dropdown.Item>
+                  ))}
+              </DropdownButton>
             </Col>
-            <Col xs={12} sm={6} md={3}>
-              <Form.Group>
-                <Form.Label>Sort...</Form.Label>
-                <Form.Control as="select">
-                  <option>By number (asc)</option>
-                  <option>By number (desc)</option>
-                  <option>By name (asc)</option>
-                  <option>By name (desc)</option>
-                </Form.Control>
-              </Form.Group>
-              </Col>
+            <Col className="px-3" xs={12} sm={6} md={4}>
+              <DropdownButton
+                className="sortBtn"
+                size="lg"
+                variant="light"
+                title="Sort..."
+              >
+                <Dropdown.Item>By number (asc)</Dropdown.Item>
+                <Dropdown.Item>By number (desc)</Dropdown.Item>
+                <Dropdown.Item>By name (asc)</Dropdown.Item>
+                <Dropdown.Item>By name (desc)</Dropdown.Item>
+              </DropdownButton>
+            </Col>
           </Form.Row>
         </Container>
       </section>
@@ -46,12 +85,15 @@ class FilterRow extends Component<PropTypes> {
   }
 
   async componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchColorsIfNeeded());
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchTypesIfNeeded());
   }
 }
 
 function mapStateToProps(state: any) {
+  const { getTypes } = state;
+  console.log(getTypes);
   return {
+    ...getTypes
   };
 }
 

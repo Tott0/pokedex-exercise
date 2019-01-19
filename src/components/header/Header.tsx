@@ -12,14 +12,14 @@ class Header extends Component {
           <Container>
             <Navbar.Brand>Pokedéx</Navbar.Brand>
             <Form inline>
-              <InputGroup className="search-input">
+              <InputGroup className="searchInput">
                 <Form.Control
                   type="text"
                   placeholder="Search by name..."
                   className="border-0"
                 />
                 <InputGroup.Append>
-                  <InputGroup.Text className="search-icon">
+                  <InputGroup.Text className="searchIcon">
                     <i className="fas fa-search" />
                   </InputGroup.Text>
                 </InputGroup.Append>

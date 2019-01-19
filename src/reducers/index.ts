@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import selectedColor from './selectedColor'
-import getColors from './getColors'
+import getTypes from './getTypes'
+import getPokemons from './getPokemons'
 
 export default combineReducers({
-  selectedColor,
-  getColors
+  getPokemons,
+  getTypes
 })

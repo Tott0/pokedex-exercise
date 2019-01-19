@@ -16,6 +16,7 @@ code {
 
 html,
 body {
+  background: var(--color-background);
   @include media-xs {
     font-size: var(--html-font-size-sm);
   }

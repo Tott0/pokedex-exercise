@@ -1,0 +1,17 @@
+@import './src/scss/variables.scss';
+.pokedex{
+  --needed-rows: 5;
+  font-size: 1rem;
+  .wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    .pokeCard{
+      background: white;
+      width: 220px;
+      height: 148px;
+    }
+  }
+}

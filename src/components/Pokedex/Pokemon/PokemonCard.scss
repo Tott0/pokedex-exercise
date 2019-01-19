@@ -1,0 +1,57 @@
+@import './src/scss/variables.scss';
+.pokemonCard{
+  font-size: 1em;
+
+  background: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 0.25em;
+
+  margin: 1em;
+
+  @include media-sm{
+    flex: 0 0 calc(50% - 2em);
+  }
+  @include media-lg{
+    flex: 0 0 calc(33.333333% - 3em);
+  }
+  @include media-xl{
+    flex: 0 0 calc(25% - 4em);
+  }
+  @include media-xxl{
+    flex: 0 0 calc(20% - 5em);
+  }
+
+  .container-fluid{
+    padding: 0;
+    margin: 0;
+  }
+
+  .info{
+    padding: 2em;
+
+    img{
+      height: 48px;
+      width: 48px;
+    }
+
+    .name{
+      font-weight: 700;
+      font-size: 1.25em;
+    }
+    .id{
+      font-weight: 300;
+      color: var(--color-secondary-text);
+    }
+  }
+
+  .types{
+    background: var(--color-dark-background);
+    color: white;
+    padding: 1em 0;
+
+    p{
+      margin: 0;
+      text-align: center;
+    }
+  }
+}
