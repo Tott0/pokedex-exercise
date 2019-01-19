@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/koombea/front-end-test-ntorres/compare/v0.8.0...v0.9.0) (2019-01-19)
+
+
+### Features
+
+* add links to pokedex to detail ([d52d3a8](https://github.com/koombea/front-end-test-ntorres/commit/d52d3a8))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/koombea/front-end-test-ntorres/compare/v0.7.0...v0.8.0) (2019-01-19)
 
