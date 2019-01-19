@@ -40,8 +40,8 @@ class FilterRow extends Component<PropTypes> {
     );
   }
 
-  sortItemSelected(sortBy: string) {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(sortPokemonsBy(sortBy));
+  sortItemSelected(sortedBy: string) {
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(sortPokemonsBy(sortedBy));
   }
 
   getSortTitle() {

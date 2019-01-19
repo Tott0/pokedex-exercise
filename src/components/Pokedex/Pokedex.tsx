@@ -7,7 +7,7 @@ import {
   Container} from "react-bootstrap";
 
 import { store } from "../..";
-import { fetchPokemonsIfNeeded, fetchAllPokemonDetails } from "../../actions";
+import { fetchPokemons } from "../../actions";
 
 import { ThunkDispatch } from "redux-thunk";
 
@@ -36,7 +36,7 @@ class Pokedex extends Component<PropTypes> {
   }
 
   async componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemonsIfNeeded());
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemons());
   }
 }
 

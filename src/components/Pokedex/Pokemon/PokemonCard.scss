@@ -8,6 +8,10 @@
 
   margin: 1em;
 
+  @include media-xs{
+    flex: 0 0 300px;
+  }
+
   @include media-sm{
     flex: 0 0 calc(50% - 2em);
   }

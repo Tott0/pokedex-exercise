@@ -17,6 +17,27 @@
         border: none;
         background: white;
       }
+      
     }
+      .dropdown-menu {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        .dropdown-item {
+          color: var(--color-secondary-text);
+          padding-top: 0.75em;
+          padding-bottom: 0.75em;
+          &:not(:last-of-type) {
+            border-bottom: solid 1px var(--color-background);
+          }
+          &.active {
+            color: var(--color-text);
+            background: var(--color-background);
+          }
+          &:active {
+            background: var(--color-background);
+          }
+        }
+      }
   }
 }

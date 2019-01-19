@@ -3,22 +3,25 @@ import {
   RECEIVE_POKEMON,
   REQUEST_POKEMONS,
   RECEIVE_POKEMONS,
-  FILTER_BY_TYPE
+  RECEIVE_SEARCHED_POKEMONS
 } from "../actions";
 import { Pokemon, Type } from "../models/Pokemon.model";
 const getPokemons = (
-  state = { pokemons: [], selectedType: Type },
+  state = { pokemons: [], searchedPokemons: [], selectedType: Type },
   action: any
 ) => {
   const pokemons: Pokemon[] = [...state.pokemons];
   switch (action.type) {
     case REQUEST_POKEMONS:
       return Object.assign({}, state);
-    case FILTER_BY_TYPE:
     case RECEIVE_POKEMONS:
       return Object.assign({}, state, {
         pokemons: action.pokemons,
         lastUpdated: action.receivedAt
+      });
+    case RECEIVE_SEARCHED_POKEMONS:
+      return Object.assign({}, state, {
+        searchedPokemons: action.searchedPokemons
       });
     case REQUEST_POKEMON:
       return Object.assign({}, state);

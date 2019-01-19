@@ -3,7 +3,8 @@ import {
   RECEIVE_TYPES,
   SELECT_POKEMON_TYPE,
   SORT_POKEMONS_BY,
-  NUMBER_ASC
+  NUMBER_ASC,
+  FILTER_POKEMONS_NAME
 } from "../actions";
 const getTypes = (
   state = { types: [], selectedType: undefined, sortedBy: NUMBER_ASC },
@@ -17,6 +18,10 @@ const getTypes = (
     case SORT_POKEMONS_BY:
       return Object.assign({}, state, {
         sortedBy: action.sortedBy
+      });
+    case FILTER_POKEMONS_NAME:
+      return Object.assign({}, state, {
+        filterName: action.filterName
       });
     case REQUEST_TYPES:
       return Object.assign({}, state);
