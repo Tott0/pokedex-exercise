@@ -1,6 +1,6 @@
 {
   "name": "pokedex-test",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "dependencies": {
     "@types/axios": "^0.14.0",
