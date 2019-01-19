@@ -1,7 +1,7 @@
 import { string } from "prop-types";
 
 export class Pokemon {
-  id?: string;
+  id?: number;
   name?: string;
   img?: string;
   url?: string;

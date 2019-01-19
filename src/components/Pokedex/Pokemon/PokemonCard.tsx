@@ -35,7 +35,7 @@ class PokemonCard extends Component<PropTypes> {
                 <span className="name">{pokemon.name}</span>
               </Row>
               <Row noGutters>
-              <span className="id">#{pokemon.id}</span>
+              <span className="id">#{pokemon.id && pokemon.id < 999 ? ("00" + pokemon.id).slice(-3): pokemon.id}</span>
               </Row>
             </Col>
           </Row>

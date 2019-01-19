@@ -1,7 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Type } from "../models/Pokemon.model";
-import { getFilteredPokemons } from "./getPokemons";
+import { getFilteredPokemons, getSortedPokemons } from "./getPokemons";
 
 export const REQUEST_TYPES = "REQUEST_TYPES";
 export function requestTypes() {
@@ -26,6 +26,17 @@ export function selectPokemonType(selectedType: Type) {
     dispatch({
       type: SELECT_POKEMON_TYPE,
       selectedType
+    });
+  };
+}
+
+export const SORT_POKEMONS_BY = "SORT_POKEMONS_BY";
+export function sortPokemonsBy(sortBy: string) {
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
+    dispatch(getSortedPokemons(sortBy));
+    dispatch({
+      type: SELECT_POKEMON_TYPE,
+      sortBy
     });
   };
 }

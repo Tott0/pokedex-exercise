@@ -9,6 +9,7 @@ export default function configureStore(preloadedState?: any) {
   return createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(thunkMiddleware, loggerMiddleware)
+    applyMiddleware(thunkMiddleware)
+    // applyMiddleware(thunkMiddleware, loggerMiddleware)
   );
 }

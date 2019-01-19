@@ -21,10 +21,10 @@ export function receivePokemon(pokemon: Pokemon) {
 function fetchPokemonApi(url: string): Promise<Pokemon>{
   return axios.get<any>(url)
   .then(res => {
-    console.log(res);
+    // console.log(res);
     const data = res.data;
     const pokemon = new Pokemon({
-      id: ("00" + data.id).slice(-3),
+      id: data.id,
       name: data.name,
       url: url,
       img: data.sprites.front_default,
@@ -64,7 +64,6 @@ function fetchAllPokemons(index: number, pokemons: Pokemon[]) {
 }
 
 export function fetchAllPokemonDetails(pokemons: Pokemon[]){
-  console.log('fetchall')
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
       return dispatch(fetchAllPokemons(0, pokemons));
   };

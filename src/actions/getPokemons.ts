@@ -26,10 +26,50 @@ function filterByType(pokemons: Pokemon[]){
   }
 }
 
+export const NUMBER_ASC = "NUMBER_ASC"
+export const NUMBER_DSC = "NUMBER_DSC"
+export const NAME_ASC   = "NAME_ASC"
+export const NAME_DSC   = "NAME_DSC"
+export const SORT_BY = "SORT_BY";
+function sortBy(pokemons: Pokemon[]){
+  return { 
+    type: SORT_BY,
+    pokemons: pokemons
+  }
+}
+
+export function getSortedPokemons(sortedBy: string){
+  return (dispatch: ThunkDispatch<{}, {}, any>) => {
+    return fetchPokemonsApi()
+    .then((pokemons: Pokemon[]) => {
+      const sortedPokemons = pokemons.sort((a: Pokemon, b: Pokemon) => {
+        switch(sortedBy){
+          case NUMBER_ASC:
+          return +("" + a.id) < +("" + b.id) ? -1 : 1;
+          case NUMBER_DSC:
+          return +("" + a.id) < +("" + b.id) ? 1 : -1;
+          case NAME_ASC:
+          return ("" + a.name) < ("" + b.name) ? -1 : 1;
+          case NAME_DSC:
+          return ("" + a.name) < ("" + b.name) ? 1 : -1;
+        }
+        return 0;
+      });
+      console.log(sortedPokemons);
+      dispatch(filterByType(sortedPokemons))
+      return Promise.resolve(sortedPokemons);
+    })
+  }
+}
+
 export function getFilteredPokemons(selectedType: Type){
   return (dispatch: ThunkDispatch<{}, {}, any>) => {
     return fetchPokemonsApi()
     .then((pokemons: Pokemon[]) => {
+      if(!selectedType){
+        dispatch(filterByType(pokemons));
+        return Promise.resolve(pokemons);
+      }
       const filteredPokemons = pokemons.filter((pokemon: Pokemon) => {
         if (pokemon.types) {
           return pokemon.types.some(

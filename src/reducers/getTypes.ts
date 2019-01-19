@@ -1,13 +1,22 @@
-import { REQUEST_TYPES, RECEIVE_TYPES, SELECT_POKEMON_TYPE } from "../actions";
-import { Pokemon } from "../models/Pokemon.model";
-const getTypes = (state = { types: [], selectedType: undefined }, action: any) => {
-  // console.log('getpokemons', state);
-  // console.log('getpokemons', action);
+import {
+  REQUEST_TYPES,
+  RECEIVE_TYPES,
+  SELECT_POKEMON_TYPE,
+  SORT_POKEMONS_BY,
+  NUMBER_ASC
+} from "../actions";
+const getTypes = (
+  state = { types: [], selectedType: undefined, sortedBy: NUMBER_ASC },
+  action: any
+) => {
   switch (action.type) {
     case SELECT_POKEMON_TYPE:
-    console.log(action);
       return Object.assign({}, state, {
         selectedType: action.selectedType
+      });
+    case SORT_POKEMONS_BY:
+      return Object.assign({}, state, {
+        sortedBy: action.sortedBy
       });
     case REQUEST_TYPES:
       return Object.assign({}, state);

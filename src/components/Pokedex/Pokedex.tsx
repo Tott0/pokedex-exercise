@@ -27,7 +27,7 @@ class Pokedex extends Component<PropTypes> {
           {
               pokemons &&
               pokemons.map((pokemon: Pokemon, index: number) => (
-              <PokemonCard key={pokemon.id || index.toString()} pokemon={pokemon} />
+              <PokemonCard key={pokemon.id || pokemon.name} pokemon={pokemon} />
             ))}
           </div>
         </Container>
