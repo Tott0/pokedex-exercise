@@ -9,15 +9,10 @@ import {
   Row
 } from "react-bootstrap";
 
-import { store } from "../../..";
-
-import { ThunkDispatch } from "redux-thunk";
-
 import { Pokemon } from "../../../models/Pokemon.model";
-import { fetchAllPokemonDetails } from "../../../actions";
 
 interface PropTypes {
-  pokemon?: Pokemon;
+  pokemon: Pokemon;
 }
 class PokemonCard extends Component<PropTypes> {
   public render() {
@@ -47,18 +42,6 @@ class PokemonCard extends Component<PropTypes> {
       </article>
     );
   }
-
-  async componentDidMount() {
-    // (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchColorsIfNeeded());
-    // if(this.props.pokemon){
-    //   console.log('fetch my own pokemon');
-    //   (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchAllPokemonDetails([this.props.pokemon]));
-    // }
-  }
 }
 
-function mapStateToProps() {
-  return {};
-}
-
-export default connect(mapStateToProps)(PokemonCard);
+export default (PokemonCard);

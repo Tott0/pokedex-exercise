@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
-import "./Index.scss";
+import "./PokedexIndex.scss";
 
 import FilterRow from "../../components/FilterRow/FilterRow";
 import Pokedex from "../../components/Pokedex/Pokedex";
 
-class Index extends Component {
+class PokedexIndex extends Component {
   public render() {
     return (
-      <div className="index">
+      <div className="pokedexIndex">
         <FilterRow />
         <Pokedex />
       </div>
@@ -16,4 +16,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default PokedexIndex;

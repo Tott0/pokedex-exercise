@@ -6,7 +6,8 @@ import { BrowserRouter as Link, Route, Router } from "react-router-dom";
 import "./App.scss";
 
 import Header from "../../components/header/Header";
-import Index from "../../scenes/Index/Index";
+import PokedexIndex from "../../scenes/PokedexIndex/PokedexIndex";
+import PokedexDetail from "../../scenes/PokedexDetail/PokedexDetail";
 
 const customHistory = createBrowserHistory();
 
@@ -18,7 +19,8 @@ class App extends Component {
       <Router history={customHistory}>
         <div className="App">
           <Header />
-          <Route exact path="/" component={Index} />
+          <Route exact path="/" component={PokedexIndex} />
+          <Route path="/pokemon/:name" component={PokedexDetail} />
         </div>
       </Router>
     );

@@ -1,0 +1,30 @@
+@import './src/scss/variables.scss';
+.statsTab{
+  background: white;
+  min-height: 200px;
+  font-size: 1em;
+  padding: 2em;
+
+  .stat{
+    display: flex;
+    padding: 0.25em;
+    width: 100%;
+    align-items: center;
+
+    .label{
+      text-align: right;
+      min-width: 75px;
+      font-weight: 500;
+    }
+
+    .bar{
+      height: 0.75em;
+      margin: 0 1em;
+      background: var(--color-dark-background);
+    }
+    .value{
+      font-weight: 600;
+    }
+  }
+
+}

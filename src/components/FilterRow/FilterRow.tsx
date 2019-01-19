@@ -134,7 +134,7 @@ class FilterRow extends Component<PropTypes> {
     );
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchTypesIfNeeded());
   }
 }

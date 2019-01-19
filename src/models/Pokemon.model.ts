@@ -6,7 +6,7 @@ export class Pokemon {
   img?: string;
   url?: string;
   types?: Type[];
-  stats?: number[];
+  stats?: Stat[];
   abilities?: Ability[];
 
   constructor(pokemon?: Partial<Pokemon>) {
@@ -16,6 +16,7 @@ export class Pokemon {
         name: this.name,
         img: this.img,
         url: this.url,
+        stats: this.stats,
         types: this.types,
         abilities: this.abilities,
       } = pokemon);
@@ -24,6 +25,19 @@ export class Pokemon {
       this.name = this.name.charAt(0).toUpperCase() + this.name.slice(1);
     }
     // Object.assign(this, pokemon);
+  }
+}
+
+export class Stat{
+  name?: string;
+  value?: number;
+  constructor(stat?: Partial<Stat>) {
+    if(stat){
+      ({
+        value: this.value,
+        name: this.name,
+      } = stat);
+    }
   }
 }
 

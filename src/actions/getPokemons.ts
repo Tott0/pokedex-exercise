@@ -1,17 +1,17 @@
 import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Pokemon, Type } from "../models/Pokemon.model";
-import { fetchAllPokemonDetails } from "./pokemonDetails";
+import { fetchAllPokemonDetails, fetchPokemonApi } from "./pokemonDetails";
 import { NUMBER_ASC, NUMBER_DSC, NAME_ASC, NAME_DSC } from "./pokemonTypes";
 export const REQUEST_POKEMONS = "REQUEST_POKEMONS";
-export function requestPokemons() {
+function requestPokemons() {
   return {
     type: REQUEST_POKEMONS
   };
 }
 
 export const RECEIVE_POKEMONS = "RECEIVE_POKEMONS";
-export function receivePokemons(pokemons: any[]) {
+function receivePokemons(pokemons: any[]) {
   return {
     type: RECEIVE_POKEMONS,
     pokemons: pokemons,
@@ -20,10 +20,49 @@ export function receivePokemons(pokemons: any[]) {
 }
 
 export const RECEIVE_SEARCHED_POKEMONS = "RECEIVE_SEARCHED_POKEMONS";
-export function receiveSearchedPokemons(pokemons: any[]) {
+function receiveSearchedPokemons(pokemons: any[]) {
   return {
     type: RECEIVE_SEARCHED_POKEMONS,
     searchedPokemons: pokemons
+  };
+}
+
+export const RECEIVE_POKEMON_BY_NAME = "RECEIVE_POKEMON_BY_NAME";
+function receivePokemonByName(pokemon: Pokemon) {
+  return {
+    type: RECEIVE_POKEMON_BY_NAME,
+    pokemon: pokemon
+  };
+}
+
+export function getPokemonByName(name: string){
+  console.log(name);
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
+    const { sortedBy, selectedType } = getState().getTypes;
+    return fetchPokemonsApi()
+    .then((pokemons: Pokemon[]) => {
+        const pokemon = pokemons.find((p: Pokemon) => {
+          return p.name === name
+        });
+        if(pokemon){
+          return Promise.resolve(pokemon);
+        }
+        return new Pokemon();
+      })
+      .then((pokemon: Pokemon) => {
+        if(pokemon.id){
+          return Promise.resolve(pokemon);
+        }
+        if(pokemon.url){
+          return fetchPokemonApi(pokemon.url);
+        }
+        return new Pokemon();
+      })
+      .then((pokemon: Pokemon) => {
+        if(pokemon.id){
+          dispatch(receivePokemonByName(pokemon));
+        }
+      });
   };
 }
 

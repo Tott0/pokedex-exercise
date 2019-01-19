@@ -3,15 +3,26 @@ import {
   RECEIVE_POKEMON,
   REQUEST_POKEMONS,
   RECEIVE_POKEMONS,
-  RECEIVE_SEARCHED_POKEMONS
+  RECEIVE_SEARCHED_POKEMONS,
+  RECEIVE_POKEMON_BY_NAME
 } from "../actions";
 import { Pokemon, Type } from "../models/Pokemon.model";
 const getPokemons = (
-  state = { pokemons: [], searchedPokemons: [], selectedType: Type },
+  state = {
+    pokemon: undefined,
+    pokemons: [],
+    searchedPokemons: [],
+    allPokemonsLoaded: false,
+    selectedType: Type
+  },
   action: any
 ) => {
   const pokemons: Pokemon[] = [...state.pokemons];
   switch (action.type) {
+    case RECEIVE_POKEMON_BY_NAME:
+      return Object.assign({}, state, {
+        pokemon: action.pokemon
+      });
     case REQUEST_POKEMONS:
       return Object.assign({}, state);
     case RECEIVE_POKEMONS:
@@ -36,6 +47,7 @@ const getPokemons = (
       }
       return Object.assign({}, state, {
         pokemons: pokemons,
+        allPokemonsLoaded: action.allPokemonsLoaded,
         lastUpdated: action.receivedAt
       });
     default:
