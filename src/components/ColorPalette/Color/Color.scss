@@ -1,0 +1,42 @@
+@import './src/scss/variables.scss';
+.color{
+  position: relative;
+  height: 100%;
+  align-items: center;
+  border: solid 1px transparent;
+  min-height: 60px;
+  .colorPreview{
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    margin-right: 1.25em;
+  }  
+  .colorInfo{
+    line-height: 150%;
+    p{
+      color: var(--color-secondary-text);
+      margin: 0;
+      font-weight: 600;
+    }
+    .name{
+      color: var(--color-text);
+      margin-bottom: 0.5em;
+    }
+  }
+  &:not(.selected):hover{
+    cursor: pointer;
+    border: solid 1px var(--color-primary);
+    &::after{
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.01);
+    }
+  }
+  &.selected{
+    border: solid 1px var(--color-primary);
+  }
+}

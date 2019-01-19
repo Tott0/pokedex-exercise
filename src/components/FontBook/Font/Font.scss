@@ -1,0 +1,12 @@
+@import './src/scss/variables.scss';
+.font{
+  flex-direction: column;
+  display: flex;
+  transition: 0.15s all ease;
+  .title, .desc{
+    transition: 0.15s all ease;
+  }
+  .desc{
+    opacity: 0.7;
+  }
+}

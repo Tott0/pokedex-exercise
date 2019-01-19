@@ -1,0 +1,22 @@
+@import "./src/scss/variables.scss";
+.appHeader {
+  // justify-content: space-between;
+  .navbar{
+    padding: 0.65rem;
+    .navbar-brand {
+      font-size: 2rem;
+    }
+    .search-input {
+      .form-control {
+        padding: 1.5em 0.75em;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+      .search-icon {
+        border: none;
+        background: white;
+      }
+    }
+  }
+}

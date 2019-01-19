@@ -1,0 +1,22 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:latest",
+        "tslint-react"
+    ],
+    "jsRules": {
+        
+        "jsx-boolean-value": false,
+        "interface-name": [true, "never-prefix"],
+        "jsx-no-multiline-js": false
+    },
+    "rules": {
+        "jsx-wrap-multiline": false,
+        "jsx-boolean-value": false,
+        "interface-name": [true, "never-prefix"],
+        "trailing-comma": false,
+        "jsx-no-multiline-js": false,
+        "arrow-parens": false,
+    },
+    "rulesDirectory": []
+}

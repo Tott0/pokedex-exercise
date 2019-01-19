@@ -1,0 +1,7 @@
+.flex-filler {
+  flex: 1 0 0;
+  &:not(.no-min) {
+    min-height: 1rem;
+    min-width: 1rem;
+  }
+}
