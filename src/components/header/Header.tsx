@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { connect } from "react-redux";
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 
 import "./Header.scss";
 
@@ -29,7 +30,11 @@ class Header extends Component<HeaderProps> {
       <header className="appHeader">
         <Navbar bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand>Pokedéx</Navbar.Brand>
+            <Navbar.Brand>
+              <NavLink to="/">
+                Pokedéx
+              </NavLink>
+              </Navbar.Brand>
             <Form inline>
               <Dropdown>
                 <InputGroup className="searchInput">

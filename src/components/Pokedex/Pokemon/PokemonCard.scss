@@ -42,6 +42,14 @@
       font-weight: 700;
       font-size: 1.25em;
     }
+    a.name{
+      color: black;
+      text-decoration: none;
+      transition: 0.15s all ease;
+      &:hover{
+        color: var(--color-primary);
+      }
+    }
     .id{
       font-weight: 300;
       color: var(--color-secondary-text);

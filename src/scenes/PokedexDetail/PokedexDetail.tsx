@@ -26,7 +26,7 @@ class PokedexDetail extends Component<DetailProps> {
         <Container>
           <Row>
             <Col xs={8} sm={6} lg={3}>
-              <PokemonCard pokemon={this.props.pokemon} />
+              <PokemonCard noLink pokemon={this.props.pokemon} />
             </Col>
             <Col xs={12} sm={12} lg={9}>
               <PokemonInfoTabs pokemon={this.props.pokemon}/>

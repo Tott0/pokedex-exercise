@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import "./PokemonCard.scss";
 
@@ -13,6 +14,7 @@ import { Pokemon } from "../../../models/Pokemon.model";
 
 interface PropTypes {
   pokemon: Pokemon;
+  noLink?: boolean;
 }
 class PokemonCard extends Component<PropTypes> {
   public render() {
@@ -23,11 +25,19 @@ class PokemonCard extends Component<PropTypes> {
         <Container fluid>
           <Row className="info" noGutters>
             <Col>
-            <img src={pokemon.img}></img>
+            {
+              this.props.noLink
+              ? <img src={pokemon.img}></img>
+              : <Link to={`/pokemon/${pokemon.name}`} className="name"><img src={pokemon.img}></img></Link>
+            }
             </Col>
             <Col>
               <Row noGutters>
-                <span className="name">{pokemon.name}</span>
+              {
+                this.props.noLink
+                ? <span className="name">{pokemon.name}</span>
+                : <Link to={`/pokemon/${pokemon.name}`} className="name">{pokemon.name}</Link>
+              }
               </Row>
               <Row noGutters>
               <span className="id">#{pokemon.id && pokemon.id < 999 ? ("00" + pokemon.id).slice(-3): pokemon.id}</span>
