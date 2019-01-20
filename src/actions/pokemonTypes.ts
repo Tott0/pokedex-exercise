@@ -100,7 +100,7 @@ function fetchTypesApi(): Promise<Type[]> {
     .get<any>(`https://pokeapi.co/api/v2/type/`)
     .then(res => {
       const data = res.data;
-      const types = data.results.map((r: Type) => new Type(r));
+      const types = data.results.slice(0, 18).map((r: Type) => new Type(r));
       typesCache = types;
       // console.log(types);
       return Promise.resolve(types);

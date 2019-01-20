@@ -65,9 +65,12 @@
   .types{
     background: var(--color-dark-background);
     color: white;
-    padding: 1em 0;
     .col{
+      padding: 1em 0;
       min-height: 20px;
+      &:first-of-type{
+        border-right: solid 1px #585b72;
+      }
     }
 
     p{
