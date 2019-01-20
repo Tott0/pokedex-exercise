@@ -10,12 +10,16 @@
       border-right: solid 1px #e2e2e4;
       transition: 0.15s all ease;
       padding: 1.25em;
+      &:first-of-type{
+        border-left: 1px;
+      }
       &:last-of-type{
         flex: 2 0 0;
+        border-right: 1px;
       }
       &.active{
         font-weight: 700;
-        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 -2px 3px -1px rgba(0, 0, 0, 0.2);
       }
     }
   }
