@@ -34,6 +34,11 @@ class Header extends Component<HeaderProps> {
     const pokemons = this.props.searchedPokemons || [];
     const selectedPokemon = pokemons[index];
   }
+  handleSubmit = (e: any) => {
+    console.log();
+    e.preventDefault();
+    e.stopPropagation();
+  }
   public render() {
     const { searchedPokemons } = this.props || [];
     return (
@@ -43,7 +48,7 @@ class Header extends Component<HeaderProps> {
             <Navbar.Brand>
               <NavLink to="/">Pokedéx</NavLink>
             </Navbar.Brand>
-            <Form inline>
+            <Form inline onSubmit={this.handleSubmit}>
               <Dropdown>
                 <InputGroup className="searchInput">
                   <Form.Control
