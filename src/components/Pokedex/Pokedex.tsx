@@ -36,7 +36,7 @@ class Pokedex extends Component<PropTypes> {
   }
 
   async componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemons());
+    // (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemon0s());
   }
 }
 

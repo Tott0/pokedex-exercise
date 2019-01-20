@@ -13,6 +13,7 @@ const getPokemons = (
     pokemon: undefined,
     pokemons: [],
     searchedPokemons: [],
+    loadingPokemons: false,
     allPokemonsLoaded: false,
     selectedType: Type
   },
@@ -39,23 +40,31 @@ const getPokemons = (
       return Object.assign({}, state);
     case RECEIVE_POKEMON:
       const { pokemon: newPokemon } = action;
-      const i = pokemons.findIndex((pok: Pokemon) => {
-        const a = "" + pok.name;
-        return a.toLowerCase() === newPokemon.name.toLowerCase();
-      });
+
+      let i;
+      if (!newPokemon.name) {
+        i = -1;
+      } else {
+        i = pokemons.findIndex((pok: Pokemon) => {
+          const a = "" + pok.name;
+          return a.toLowerCase() === newPokemon.name.toLowerCase();
+        });
+      }
       if (i >= 0) {
         pokemons[i] = newPokemon;
       }
+      // console.log(action);
       return Object.assign({}, state, {
         pokemons: pokemons,
         allPokemonsLoaded: action.allPokemonsLoaded,
+        loadingPokemons: action.loadingPokemons,
         lastUpdated: action.receivedAt
       });
-      case UPDATE_SELECTED_POKEMON_TYPES:
+    case UPDATE_SELECTED_POKEMON_TYPES:
       const { pokemon } = state;
       return Object.assign({}, state, {
         pokemon: pokemon
-      })
+      });
     default:
       return state;
   }

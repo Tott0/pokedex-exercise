@@ -21,15 +21,12 @@ class Header extends Component<HeaderProps> {
     super(props);
     this.nameInput = React.createRef();
   }
-  filterPokemons(name: string){
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(
-      filterPokemonsByName(name)
-    );
+  filterPokemons(name: string) {
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(filterPokemonsByName(name));
   }
   nameChanged = (ev: any) => {
     this.filterPokemons(ev.target.value);
-    
-  }
+  };
   pokemonSelected(index: number) {
     const pokemons = this.props.searchedPokemons || [];
     const selectedPokemon = pokemons[index];
@@ -38,7 +35,7 @@ class Header extends Component<HeaderProps> {
     console.log();
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
   public render() {
     const { searchedPokemons } = this.props || [];
     return (
@@ -57,6 +54,10 @@ class Header extends Component<HeaderProps> {
                     className="border-0"
                     ref={this.nameInput}
                     onChange={this.nameChanged}
+                    onBlur={() => {
+                      this.nameInput.current.value = "";
+                      this.filterPokemons("");
+                    }}
                   />
                   <InputGroup.Append>
                     <InputGroup.Text className="searchIcon">

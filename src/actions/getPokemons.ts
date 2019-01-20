@@ -37,7 +37,7 @@ function receivePokemonByName(pokemon: Pokemon) {
 }
 
 export function getPokemonByName(name: string) {
-  console.log(name);
+  // console.log(name);
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     return fetchPokemonsApi()
       .then((pokemons: Pokemon[]) => {
@@ -142,8 +142,12 @@ export function fetchPokemons() {
         dispatch(receivePokemons(pokemons));
         return Promise.resolve(pokemons);
       })
-      .then((pokemons: Pokemon[]) =>
-        dispatch(fetchAllPokemonDetails(pokemons))
+      .then((pokemons: Pokemon[]) => {
+        if(!getState().getPokemons.loadingPokemons){
+          // console.log(getState());
+          dispatch(fetchAllPokemonDetails(pokemons))
+        }
+      }
       );
   };
 }

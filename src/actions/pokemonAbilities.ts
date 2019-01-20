@@ -47,13 +47,13 @@ function fetchAllAbilities(index: number, pokemon: Pokemon) {
   }
   const ability = abilities[index];
   if (!ability) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllAbilities(++index, pokemon))};
   }
   const url = ability.url;
   if (!url || ability.id) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllAbilities(++index, pokemon))};
   }
-  return (dispatch: ThunkDispatch<{}, {}, any>) => {
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     dispatch(requestAbility());
     return fetchAbilityApi(url)
       .then((ability: Ability) => {
@@ -65,9 +65,12 @@ function fetchAllAbilities(index: number, pokemon: Pokemon) {
           pokemon.abilities = [...pokemon.abilities, ability];
         }
         updatePokemonsCache(pokemon);
-        dispatch(receivePokemon(pokemon));
+        const{ loadingPokemons, allPokemonsLoaded } = getState().getPokemons;
+        dispatch(receivePokemon(pokemon, loadingPokemons, allPokemonsLoaded));
       })
-      .then(() => dispatch(fetchAllAbilities(++index, pokemon)));
+      .then(() => {
+        dispatch(fetchAllAbilities(++index, pokemon))
+      });
   };
 }
 

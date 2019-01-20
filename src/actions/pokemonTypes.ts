@@ -118,11 +118,11 @@ function fetchAllTypesDetails(index: number, types: Type[]) {
   }
   const type = types[index];
   if (!type) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllTypesDetails(++index, types))};
   }
   const url = type.url;
   if (!url || type.id) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllTypesDetails(++index, types))};
   }
   return (dispatch: ThunkDispatch<{}, {}, any>) => {
     return fetchTypeDetailsApi(url)

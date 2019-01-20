@@ -18,10 +18,8 @@ class PokedexIndex extends Component<PropTypes> {
       <div className="pokedexIndex">
         {!allPokemonsLoaded && (
           <Alert variant="warning" className="text-center">
-          <i className="mr-3 fas fa-circle-notch fa-spin" />
-          ...
-            <span>Cargando datos de la API</span>
-            ...
+            <i className="mr-3 fas fa-circle-notch fa-spin" />
+            <span>...Cargando datos de la API...</span>
             <i className="ml-3 fas fa-circle-notch fa-spin" />
           </Alert>
         )}

@@ -8,14 +8,16 @@ export const REQUEST_POKEMON = "REQUEST_POKEMON";
 export function requestPokemon(url: string) {
   return {
     type: REQUEST_POKEMON,
+    loadingPokemons: true,
     url
   };
 }
 export const RECEIVE_POKEMON = "RECEIVE_POKEMON";
-export function receivePokemon(pokemon: Pokemon, allPokemonsLoaded = false) {
+export function receivePokemon(pokemon: Pokemon, loadingPokemons = true, allPokemonsLoaded = false) {
   return {
     type: RECEIVE_POKEMON,
     pokemon: pokemon,
+    loadingPokemons: loadingPokemons,
     allPokemonsLoaded: allPokemonsLoaded,
     receivedAt: Date.now()
   };
@@ -56,23 +58,25 @@ export async function fetchPokemonApi(url: string): Promise<Pokemon> {
 }
 
 function fetchAllPokemons(index: number, pokemons: Pokemon[]) {
-  if (index > pokemons.length) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+  if (index >= pokemons.length) {
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {
+      dispatch(receivePokemon(new Pokemon(), false, true));
+    };
   }
   const pokemon = pokemons[index];
   if (!pokemon) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllPokemons(++index, pokemons))};
   }
   const url = pokemon.url;
   if (!url || pokemon.id) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllPokemons(++index, pokemons))};
   }
   return (dispatch: ThunkDispatch<{}, {}, any>) => {
     dispatch(requestPokemon(url));
     return fetchPokemonApi(url)
       .then((pokemon: Pokemon) => {
         updatePokemonsCache(pokemon);
-        dispatch(receivePokemon(pokemon, index === pokemons.length - 1));
+        dispatch(receivePokemon(pokemon, index < pokemons.length));
         return Promise.resolve(pokemon);
       })
       .then(() => dispatch(fetchAllPokemons(++index, pokemons)));
