@@ -1,0 +1,20 @@
+@import "./src/scss/variables.scss";
+.abilitiesTab {
+  background: white;
+  min-height: 200px;
+  font-size: 1em;
+  padding: 2em;
+
+  .ability {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.75;
+    width: 100%;
+
+    .name {
+      font-weight: 700;
+    }
+    p {
+    }
+  }
+}

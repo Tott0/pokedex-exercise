@@ -1,3 +1,10 @@
+@import "./src/scss/variables.scss";
 .pokedexDetail{
   margin: 2em 0;
+
+  .pokemonCard{
+    @include media-xs{
+      margin-bottom: 3em;
+    }
+  }
 }

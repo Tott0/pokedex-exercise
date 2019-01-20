@@ -9,7 +9,7 @@
   margin: 1em;
 
   @include media-xs{
-    flex: 0 0 300px;
+    flex: 0 0 100%;
   }
 
   @include media-sm{
@@ -60,6 +60,9 @@
     background: var(--color-dark-background);
     color: white;
     padding: 1em 0;
+    .col{
+      min-height: 20px;
+    }
 
     p{
       margin: 0;

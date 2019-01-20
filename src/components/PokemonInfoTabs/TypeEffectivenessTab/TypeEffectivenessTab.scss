@@ -1,0 +1,12 @@
+@import "./src/scss/variables.scss";
+.typeEffectivenessTab {
+  background: white;
+  min-height: 200px;
+  font-size: 1.05em;
+  padding: 2em;
+  line-height: 1.95;
+
+  span.eff{
+    font-weight: 700;
+  }
+}

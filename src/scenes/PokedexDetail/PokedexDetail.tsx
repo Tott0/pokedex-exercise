@@ -6,7 +6,7 @@ import "./PokedexDetail.scss";
 import { RouteComponentProps } from "react-router-dom";
 import { store } from "../..";
 import { ThunkDispatch } from "redux-thunk";
-import { getPokemonByName } from "../../actions";
+import { getPokemonByName, getTypesArray } from "../../actions";
 import PokemonCard from "../../components/Pokedex/Pokemon/PokemonCard";
 import { Pokemon } from "../../models/Pokemon.model";
 
@@ -25,11 +25,11 @@ class PokedexDetail extends Component<DetailProps> {
       <section className="pokedexDetail">
         <Container>
           <Row>
-            <Col xs={8} sm={6} lg={3}>
+            <Col xs={12} sm={12} lg={3}>
               <PokemonCard noLink pokemon={this.props.pokemon} />
             </Col>
             <Col xs={12} sm={12} lg={9}>
-              <PokemonInfoTabs pokemon={this.props.pokemon}/>
+            <PokemonInfoTabs pokemon={this.props.pokemon}/>
             </Col>
           </Row>
         </Container>
@@ -45,9 +45,23 @@ class PokedexDetail extends Component<DetailProps> {
 }
 
 function mapStateToProps(state: any) {
-  const { getPokemons } = state;
+  const { getPokemons, getTypes } = state; 
+  const pokemon: Pokemon = getPokemons.pokemon;
+  if(pokemon){
+    if(pokemon.types && pokemon.types.length > 0){
+      if(!pokemon.types[0].id){
+        const typesArray = getTypesArray();
+        pokemon.types = pokemon.types.map(
+          (type: any) => {
+            const fType = typesArray.find(tp => ("" + tp.name).toLowerCase() === type.name.toLowerCase());
+            return fType || type
+          }
+        )
+      }
+    }
+  }
   return {
-    pokemon: getPokemons.pokemon
+    pokemon: pokemon
   };
 }
 

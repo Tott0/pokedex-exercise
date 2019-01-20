@@ -4,7 +4,8 @@ import {
   REQUEST_POKEMONS,
   RECEIVE_POKEMONS,
   RECEIVE_SEARCHED_POKEMONS,
-  RECEIVE_POKEMON_BY_NAME
+  RECEIVE_POKEMON_BY_NAME,
+  UPDATE_SELECTED_POKEMON_TYPES
 } from "../actions";
 import { Pokemon, Type } from "../models/Pokemon.model";
 const getPokemons = (
@@ -50,6 +51,11 @@ const getPokemons = (
         allPokemonsLoaded: action.allPokemonsLoaded,
         lastUpdated: action.receivedAt
       });
+      case UPDATE_SELECTED_POKEMON_TYPES:
+      const { pokemon } = state;
+      return Object.assign({}, state, {
+        pokemon: pokemon
+      })
     default:
       return state;
   }

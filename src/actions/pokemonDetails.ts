@@ -2,6 +2,7 @@ import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Pokemon, Ability, Type } from "../models/Pokemon.model";
 import { updatePokemonsCache } from "./getPokemons";
+import { getTypesArray } from "./pokemonTypes";
 export const REQUEST_POKEMON = "REQUEST_POKEMON";
 export function requestPokemon(url: string) {
   return {
@@ -23,9 +24,10 @@ export function fetchPokemonApi(url: string): Promise<Pokemon> {
   return axios
     .get<any>(url)
     .then(res => {
-      // console.log(res);
       const data = res.data;
-      console.log(data);
+      // console.log(data);
+      const types = getTypesArray();
+      // console.log(types);
       const pokemon = new Pokemon({
         id: data.id,
         name: data.name,
@@ -34,14 +36,14 @@ export function fetchPokemonApi(url: string): Promise<Pokemon> {
           ? data.sprites.front_default
           : "https://vignette.wikia.nocookie.net/undertale-au/images/d/d8/MissingNo..png/revision/latest?cb=20170828074638",
         types: data.types.map(
-          (tp: any) => new Type({ name: tp.type.name, url: tp.type.url })
+          (dataTypes: any) => types.find(tp => ("" + tp.name).toLowerCase() === dataTypes.type.name)
         ),
         stats: data.stats.map((st: any) => ({
           name: st.stat.name,
           value: st.base_stat
         })),
-        abilities: data.abilities.map(
-          (a: Ability) => new Ability({ name: a.name, url: a.url })
+        abilities: data.abilities.sort((a: any, b: any) => a.slot < b.slot ? -1 : 1).map(
+          (a: any) => new Ability({ name: a.ability.name, url: a.ability.url })
         )
       });
       return Promise.resolve(pokemon);

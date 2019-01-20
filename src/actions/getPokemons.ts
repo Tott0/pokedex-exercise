@@ -38,7 +38,6 @@ function receivePokemonByName(pokemon: Pokemon) {
 export function getPokemonByName(name: string){
   console.log(name);
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
-    const { sortedBy, selectedType } = getState().getTypes;
     return fetchPokemonsApi()
     .then((pokemons: Pokemon[]) => {
         const pokemon = pokemons.find((p: Pokemon) => {
@@ -54,7 +53,7 @@ export function getPokemonByName(name: string){
           return Promise.resolve(pokemon);
         }
         if(pokemon.url){
-          return fetchPokemonApi(pokemon.url);
+          return Promise.resolve(fetchPokemonApi(pokemon.url));
         }
         return new Pokemon();
       })

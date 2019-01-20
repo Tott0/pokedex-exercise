@@ -2,4 +2,21 @@
 .pokemonInfoTabs{
   font-size: 1em;
 
+  .nav{
+    font-size: 1.25em;
+    display: flex;
+    .nav-item{
+      flex: 1 0 0;
+      border-right: solid 1px #e2e2e4;
+      transition: 0.15s all ease;
+      padding: 1.25em;
+      &.active{
+        font-weight: 700;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  .tabWrapper{
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  }
 }

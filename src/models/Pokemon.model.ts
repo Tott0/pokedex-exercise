@@ -45,7 +45,7 @@ export class Type {
   id?: number;
   name?: string;
   url?: string;
-  damageRelations?: [number];
+  damageRelations?: number[];
 
   constructor(type?: Partial<Type>) {
     if(type){

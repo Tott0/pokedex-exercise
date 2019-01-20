@@ -60,4 +60,4 @@ function mapStateToProps() {
   return {};
 }
 
-export default connect(mapStateToProps)(StatsTab);
+export default (StatsTab);

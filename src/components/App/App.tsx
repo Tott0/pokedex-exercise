@@ -8,6 +8,9 @@ import "./App.scss";
 import Header from "../../components/header/Header";
 import PokedexIndex from "../../scenes/PokedexIndex/PokedexIndex";
 import PokedexDetail from "../../scenes/PokedexDetail/PokedexDetail";
+import { store } from "../..";
+import { ThunkDispatch } from "redux-thunk";
+import { fetchTypesIfNeeded, fetchPokemons } from "../../actions";
 
 const customHistory = createBrowserHistory();
 
@@ -24,6 +27,11 @@ class App extends Component {
         </div>
       </Router>
     );
+  }
+
+  componentDidMount(){
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchTypesIfNeeded());
+    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemons());
   }
 }
 

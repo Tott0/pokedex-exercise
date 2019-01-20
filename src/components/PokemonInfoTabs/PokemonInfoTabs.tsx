@@ -13,6 +13,8 @@ import {
 
 import { Pokemon } from "../../models/Pokemon.model";
 import StatsTab from "./StatsTab/StatsTab";
+import AbilitiesTab from "./AbilitiesTab/AbilitiesTab";
+import TypeEffectivenessTab from "./TypeEffectivenessTab/TypeEffectivenessTab";
 
 interface PropTypes {
   pokemon: Pokemon;
@@ -21,6 +23,8 @@ class PokemonInfoTabs extends Component<PropTypes> {
   public render() {
     let {pokemon} = this.props;
     pokemon =  pokemon || new Pokemon();
+    const abilities = pokemon.abilities || [];
+    const types = pokemon.abilities || [];
     const stats = pokemon.stats || [];
     return (
       <article className="pokemonInfoTabs">
@@ -31,10 +35,16 @@ class PokemonInfoTabs extends Component<PropTypes> {
           <StatsTab stats={stats}/>
         </Tab>
         <Tab eventKey="abilities" title="Abilities">
-          <h1>Abilities</h1>
+        {
+          abilities.length > 0 &&
+          <AbilitiesTab pokemon={pokemon}/>
+        }
         </Tab>
         <Tab eventKey="typeEffectiveness" title="Type Effectiveness">
-          <h1>Effectiveness</h1>
+        {
+          types.length > 0 &&
+          <TypeEffectivenessTab pokemon={pokemon}/>
+        }
         </Tab>
 
         </Tabs>
@@ -50,4 +60,4 @@ function mapStateToProps() {
   return {};
 }
 
-export default connect(mapStateToProps)(PokemonInfoTabs);
+export default (PokemonInfoTabs);
