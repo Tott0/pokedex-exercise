@@ -38,7 +38,7 @@ export async function fetchPokemonApi(url: string): Promise<Pokemon> {
         img: data.sprites.front_default
           ? data.sprites.front_default
           : "https://vignette.wikia.nocookie.net/undertale-au/images/d/d8/MissingNo..png/revision/latest?cb=20170828074638",
-        types: data.types.map(
+        types: data.types.sort((a: any, b: any) => a.slot < b.slot ? -1 : 1).map(
           (dataTypes: any) => types.find(tp => ("" + tp.name).toLowerCase() === dataTypes.type.name)
         ),
         stats: data.stats.map((st: any) => ({

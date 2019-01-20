@@ -19,6 +19,11 @@
       overflow: auto;
     }
   }
+  .dropCol{
+    @include media-md {
+      padding-right: 1em;
+    }
+  }
   // .sortBtn {
     // box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5);
     button.dropdown-toggle {

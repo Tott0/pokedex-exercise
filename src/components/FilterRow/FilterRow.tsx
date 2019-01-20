@@ -64,7 +64,7 @@ class FilterRow extends Component<PropTypes> {
       <section className="filterRow">
         <Container>
           <Form.Row>
-            <Col className="px-3" xs={12} sm={6} md={4}>
+            <Col className="dropCol" xs={12} sm={6} md={4}>
               <DropdownButton
                 className="typeBtn"
                 size="lg"
@@ -91,7 +91,7 @@ class FilterRow extends Component<PropTypes> {
                   ))}
               </DropdownButton>
             </Col>
-            <Col className="px-3" xs={12} sm={6} md={4}>
+            <Col className="dropCol" xs={12} sm={6} md={4}>
               <DropdownButton
                 className="sortBtn"
                 size="lg"
