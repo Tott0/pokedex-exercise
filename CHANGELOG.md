@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/koombea/front-end-test-ntorres/compare/v0.11.3...v0.12.0) (2019-01-20)
+
+
+### Features
+
+* adds loading indicator, fixes flex layout ([b2be274](https://github.com/koombea/front-end-test-ntorres/commit/b2be274))
+
+
+
 <a name="0.11.3"></a>
 ## [0.11.3](https://github.com/koombea/front-end-test-ntorres/compare/v0.11.2...v0.11.3) (2019-01-20)
 
