@@ -3,6 +3,7 @@ import axios from "axios";
 import { Pokemon, Type } from "../models/Pokemon.model";
 import { fetchAllPokemonDetails, fetchPokemonApi } from "./pokemonDetails";
 import { NUMBER_ASC, NUMBER_DSC, NAME_ASC, NAME_DSC } from "./pokemonTypes";
+import { fetchAllAbilityDetails } from "./pokemonAbilities";
 export const REQUEST_POKEMONS = "REQUEST_POKEMONS";
 function requestPokemons() {
   return {
@@ -35,30 +36,31 @@ function receivePokemonByName(pokemon: Pokemon) {
   };
 }
 
-export function getPokemonByName(name: string){
+export function getPokemonByName(name: string) {
   console.log(name);
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     return fetchPokemonsApi()
-    .then((pokemons: Pokemon[]) => {
+      .then((pokemons: Pokemon[]) => {
         const pokemon = pokemons.find((p: Pokemon) => {
-          return p.name === name
+          return p.name === name;
         });
         if(pokemon){
-          return Promise.resolve(pokemon);
+          if (pokemon.id) {
+            return Promise.resolve(pokemon);
+          }
+          if(pokemon.url){
+            return Promise.resolve(fetchPokemonApi(pokemon.url));
+          }
         }
-        return new Pokemon();
+        return Promise.reject("NO POKEMON");
       })
       .then((pokemon: Pokemon) => {
-        if(pokemon.id){
-          return Promise.resolve(pokemon);
-        }
-        if(pokemon.url){
-          return Promise.resolve(fetchPokemonApi(pokemon.url));
-        }
-        return new Pokemon();
+        dispatch(fetchAllAbilityDetails(pokemon))
+        return pokemon;
       })
       .then((pokemon: Pokemon) => {
-        if(pokemon.id){
+        console.log(pokemon);
+        if (pokemon.id) {
           dispatch(receivePokemonByName(pokemon));
         }
       });
@@ -98,12 +100,12 @@ function filterPokemons(selectedType: Type, p: Pokemon[]): Promise<Pokemon[]> {
 
 var pokemonsCache: Pokemon[];
 function fetchPokemonsApi() {
+  if (pokemonsCache) {
+    return Promise.resolve(pokemonsCache);
+  }
   return axios
     .get<any>(`https://pokeapi.co/api/v2/pokemon?limit=949`)
-    .then(res => {
-      if (pokemonsCache) {
-        return Promise.resolve(pokemonsCache);
-      }
+    .then(res => {   
       const data = res.data;
       const pokemons = data.results.map((r: Pokemon) => new Pokemon(r));
       pokemonsCache = pokemons;
@@ -122,18 +124,20 @@ export function fetchPokemons() {
     const { sortedBy, selectedType } = getState().getTypes;
     dispatch(requestPokemons());
     return fetchPokemonsApi()
-    .then((pokemons: Pokemon[]) => { // sort pokemons
-      if(sortedBy){
-        return Promise.resolve(sortPokemons(sortedBy, pokemons));
-      }
-      return Promise.resolve(pokemons)
-    })
-    .then((pokemons: Pokemon[]) => { // filter pokemons
-      if(selectedType){
-        return Promise.resolve(filterPokemons(selectedType, pokemons));
-      }
-      return Promise.resolve(pokemons)
-    })
+      .then((pokemons: Pokemon[]) => {
+        // sort pokemons
+        if (sortedBy) {
+          return Promise.resolve(sortPokemons(sortedBy, pokemons));
+        }
+        return Promise.resolve(pokemons);
+      })
+      .then((pokemons: Pokemon[]) => {
+        // filter pokemons
+        if (selectedType) {
+          return Promise.resolve(filterPokemons(selectedType, pokemons));
+        }
+        return Promise.resolve(pokemons);
+      })
       .then((pokemons: Pokemon[]) => {
         dispatch(receivePokemons(pokemons));
         return Promise.resolve(pokemons);
@@ -146,15 +150,18 @@ export function fetchPokemons() {
 
 export function searchPokemons() {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
-    const { filterName } = getState().getTypes;
+    let { filterName } = getState().getTypes;
+    filterName = filterName ? filterName : "";
     dispatch(requestPokemons());
-    return fetchPokemonsApi()
-    .then((pokemons: Pokemon[]) => {
-        const filteredByName = pokemons.filter((pokemon: Pokemon) => {
-          const name= ("" + pokemon.name);
-          return name.startsWith(filterName);
-        })
-        dispatch(receiveSearchedPokemons(filteredByName));
-      })
+    return fetchPokemonsApi().then((pokemons: Pokemon[]) => {
+      let filteredByName: Pokemon[] = [];
+      if(filterName){
+        filteredByName = pokemons.filter((pokemon: Pokemon) => {
+          const name = ("" + pokemon.name).toLowerCase();
+          return name.startsWith(filterName.toLowerCase());
+        });
+      }
+      dispatch(receiveSearchedPokemons(filteredByName));
+    });
   };
 }

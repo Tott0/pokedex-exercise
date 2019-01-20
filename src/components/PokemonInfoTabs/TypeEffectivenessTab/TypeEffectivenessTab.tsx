@@ -1,13 +1,9 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
 
 import "./TypeEffectivenessTab.scss";
 
-import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
-import { Ability, Pokemon } from "../../../models/Pokemon.model";
-import { store } from "../../..";
-import { ThunkDispatch } from "redux-thunk";
-import { fetchAllAbilityDetails } from "../../../actions/pokemonAbilities";
+import { Col, Row } from "react-bootstrap";
+import { Pokemon } from "../../../models/Pokemon.model";
 import { getTypesArray } from "../../../actions";
 
 interface PropTypes {
@@ -58,7 +54,6 @@ class TypeEffectivenessTab extends Component<PropTypes> {
       });
     }
 
-    console.log(dmgArray);
     const typesArray = getTypesArray();
 
     return (
@@ -77,14 +72,8 @@ class TypeEffectivenessTab extends Component<PropTypes> {
   }
 
   componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(
-      fetchAllAbilityDetails(this.props.pokemon)
-    );
   }
 }
 
-function mapStateToProps() {
-  return {};
-}
 
 export default TypeEffectivenessTab;

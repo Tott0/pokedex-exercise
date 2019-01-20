@@ -15,12 +15,22 @@ interface HeaderProps {
   searchedPokemons?: Pokemon[];
 }
 class Header extends Component<HeaderProps> {
-  nameChanged(ev: any) {
+  nameInput: React.RefObject<any>;
+
+  constructor(props: Readonly<HeaderProps>) {
+    super(props);
+    this.nameInput = React.createRef();
+  }
+  filterPokemons(name: string){
     (store.dispatch as ThunkDispatch<{}, {}, any>)(
-      filterPokemonsByName(ev.target.value)
+      filterPokemonsByName(name)
     );
   }
-  pokemonSelected(index: number){;
+  nameChanged = (ev: any) => {
+    this.filterPokemons(ev.target.value);
+    
+  }
+  pokemonSelected(index: number) {
     const pokemons = this.props.searchedPokemons || [];
     const selectedPokemon = pokemons[index];
   }
@@ -31,10 +41,8 @@ class Header extends Component<HeaderProps> {
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand>
-              <NavLink to="/">
-                Pokedéx
-              </NavLink>
-              </Navbar.Brand>
+              <NavLink to="/">Pokedéx</NavLink>
+            </Navbar.Brand>
             <Form inline>
               <Dropdown>
                 <InputGroup className="searchInput">
@@ -42,6 +50,7 @@ class Header extends Component<HeaderProps> {
                     type="text"
                     placeholder="Search by name..."
                     className="border-0"
+                    ref={this.nameInput}
                     onChange={this.nameChanged}
                   />
                   <InputGroup.Append>
@@ -58,12 +67,18 @@ class Header extends Component<HeaderProps> {
                 >
                   {searchedPokemons &&
                     searchedPokemons.map((pokemon: Pokemon, index: number) => (
-                      <Dropdown.Item
+                      <NavLink
+                        className="dropdown-item"
+                        role="button"
+                        to={`/pokemon/${pokemon.name}`}
                         key={index.toString()}
-                        onSelect={() => {this.pokemonSelected(index)}}
+                        onClick={ev => {
+                          this.nameInput.current.value = "";
+                          this.filterPokemons("");
+                        }}
                       >
                         {pokemon.name}
-                      </Dropdown.Item>
+                      </NavLink>
                     ))}
                 </Dropdown.Menu>
               </Dropdown>

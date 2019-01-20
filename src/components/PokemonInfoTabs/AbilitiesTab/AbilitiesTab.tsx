@@ -1,13 +1,8 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
 
 import "./AbilitiesTab.scss";
 
-import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { Ability, Pokemon } from "../../../models/Pokemon.model";
-import { store } from "../../..";
-import { ThunkDispatch } from "redux-thunk";
-import { fetchAllAbilityDetails } from "../../../actions/pokemonAbilities";
 
 interface PropTypes {
   pokemon: Pokemon;
@@ -31,12 +26,8 @@ class AbilitiesTab extends Component<PropTypes> {
   }
 
   componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchAllAbilityDetails(this.props.pokemon));
   }
 }
 
-function mapStateToProps() {
-  return {};
-}
 
 export default (AbilitiesTab);

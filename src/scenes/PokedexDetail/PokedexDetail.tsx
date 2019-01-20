@@ -42,6 +42,13 @@ class PokedexDetail extends Component<DetailProps> {
       getPokemonByName(this.props.match.params.name)
     );
   }
+  componentWillReceiveProps(newProps: any){
+    if(newProps.match.params.name !== this.props.match.params.name){
+      (store.dispatch as ThunkDispatch<{}, {}, any>)(
+        getPokemonByName(newProps.match.params.name)
+      );
+    }
+  }
 }
 
 function mapStateToProps(state: any) {

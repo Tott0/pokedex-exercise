@@ -3,6 +3,7 @@ import axios from "axios";
 import { Pokemon, Ability, Type } from "../models/Pokemon.model";
 import { updatePokemonsCache } from "./getPokemons";
 import { getTypesArray } from "./pokemonTypes";
+import { fetchAllAbilityDetails } from "./pokemonAbilities";
 export const REQUEST_POKEMON = "REQUEST_POKEMON";
 export function requestPokemon(url: string) {
   return {
@@ -72,6 +73,7 @@ function fetchAllPokemons(index: number, pokemons: Pokemon[]) {
       .then((pokemon: Pokemon) => {
         updatePokemonsCache(pokemon);
         dispatch(receivePokemon(pokemon, index === pokemons.length - 1));
+        return Promise.resolve(pokemon);
       })
       .then(() => dispatch(fetchAllPokemons(++index, pokemons)));
   };

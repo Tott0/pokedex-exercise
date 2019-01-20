@@ -1,6 +1,7 @@
 {
   "name": "pokedex-test",
   "version": "0.10.1",
+  "homepage": "https://t0t-pokedex-exercise.netlify.com",
   "private": true,
   "dependencies": {
     "@types/axios": "^0.14.0",
@@ -36,8 +37,7 @@
     "eject": "react-scripts eject",
     "lint": "tslint -c tslint.json \"src/**/*.${ts, tsx}\"",
     "release": "standard-version && git push --follow-tags",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "netlify deploy --dir=build --prod"
   },
   "eslintConfig": {
     "extends": "react-app"
