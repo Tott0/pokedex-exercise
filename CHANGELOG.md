@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.12.5"></a>
+## [0.12.5](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.4...v0.12.5) (2019-01-20)
+
+
+### Bug Fixes
+
+* missing borders in types col ([c0ff2ab](https://github.com/koombea/front-end-test-ntorres/commit/c0ff2ab))
+
+
+
 <a name="0.12.4"></a>
 ## [0.12.4](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.3...v0.12.4) (2019-01-20)
 
