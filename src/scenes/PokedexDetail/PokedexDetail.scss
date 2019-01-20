@@ -6,5 +6,11 @@
     @include media-xs{
       margin-bottom: 3em;
     }
+    @include media-sm{
+      margin-bottom: 3em;
+    }
+    @include media-lg{
+      margin-bottom: initial;
+    }
   }
 }

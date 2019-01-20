@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 import "./PokemonCard.scss";
 
@@ -15,13 +16,14 @@ import { Pokemon } from "../../../models/Pokemon.model";
 interface PropTypes {
   pokemon: Pokemon;
   noLink?: boolean;
+  noMargin?: boolean;
 }
 class PokemonCard extends Component<PropTypes> {
   public render() {
     let {pokemon} = this.props;
     pokemon =  pokemon || new Pokemon();
     return (
-      <article className="pokemonCard">
+      <article className={classNames("pokemonCard", {noMargin: this.props.noMargin})}>
         <Container fluid>
           <Row className="info" noGutters>
             <Col>
