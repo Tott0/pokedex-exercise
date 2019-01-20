@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.12.3"></a>
+## [0.12.3](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.2...v0.12.3) (2019-01-20)
+
+
+### Bug Fixes
+
+* pokemon types had order in slot! ([e8dc92c](https://github.com/koombea/front-end-test-ntorres/commit/e8dc92c))
+
+
+
 <a name="0.12.2"></a>
 ## [0.12.2](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.1...v0.12.2) (2019-01-20)
 
