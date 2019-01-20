@@ -99,7 +99,7 @@ function filterPokemons(selectedType: Type, p: Pokemon[]): Promise<Pokemon[]> {
 }
 
 var pokemonsCache: Pokemon[];
-function fetchPokemonsApi() {
+export function fetchPokemonsApi() {
   if (pokemonsCache) {
     return Promise.resolve(pokemonsCache);
   }

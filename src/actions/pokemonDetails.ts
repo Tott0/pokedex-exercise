@@ -1,7 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Pokemon, Ability, Type } from "../models/Pokemon.model";
-import { updatePokemonsCache } from "./getPokemons";
+import { updatePokemonsCache, fetchPokemonsApi } from "./getPokemons";
 import { getTypesArray } from "./pokemonTypes";
 import { fetchAllAbilityDetails } from "./pokemonAbilities";
 export const REQUEST_POKEMON = "REQUEST_POKEMON";
@@ -21,7 +21,7 @@ export function receivePokemon(pokemon: Pokemon, allPokemonsLoaded = false) {
   };
 }
 
-export function fetchPokemonApi(url: string): Promise<Pokemon> {
+export async function fetchPokemonApi(url: string): Promise<Pokemon> {
   return axios
     .get<any>(url)
     .then(res => {

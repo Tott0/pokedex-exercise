@@ -24,7 +24,6 @@ class PokemonCard extends Component<PropTypes> {
     pokemon =  pokemon || new Pokemon();
     return (
       <article className={classNames("pokemonCard", {noMargin: this.props.noMargin})}>
-        <Container fluid>
           <Row className="info" noGutters>
             <Col>
             {
@@ -50,7 +49,6 @@ class PokemonCard extends Component<PropTypes> {
             <Col><p>{pokemon.types && pokemon.types[0] && pokemon.types[0].name}</p></Col>
             <Col><p>{pokemon.types && pokemon.types[1] && pokemon.types[1].name}</p></Col>
           </Row>
-        </Container>
       </article>
     );
   }
