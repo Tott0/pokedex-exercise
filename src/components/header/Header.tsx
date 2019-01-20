@@ -16,7 +16,6 @@ interface HeaderProps {
 }
 class Header extends Component<HeaderProps> {
   nameInput: React.RefObject<any>;
-
   constructor(props: Readonly<HeaderProps>) {
     super(props);
     this.nameInput = React.createRef();
@@ -55,8 +54,10 @@ class Header extends Component<HeaderProps> {
                     ref={this.nameInput}
                     onChange={this.nameChanged}
                     onBlur={() => {
-                      this.nameInput.current.value = "";
-                      this.filterPokemons("");
+                      setTimeout(() => {
+                        this.nameInput.current.value = "";
+                        this.filterPokemons("");
+                      }, 100);
                     }}
                   />
                   <InputGroup.Append>
@@ -79,6 +80,7 @@ class Header extends Component<HeaderProps> {
                         to={`/pokemon/${pokemon.name}`}
                         key={index.toString()}
                         onClick={ev => {
+                          ev.stopPropagation();
                           this.nameInput.current.value = "";
                           this.filterPokemons("");
                         }}
