@@ -1,6 +1,6 @@
 {
   "name": "pokedex-test",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "homepage": "https://t0t-pokedex-exercise.netlify.com",
   "private": true,
   "dependencies": {

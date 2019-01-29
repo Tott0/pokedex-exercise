@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.1"></a>
+## [0.13.1](https://github.com/koombea/front-end-test-ntorres/compare/v0.13.0...v0.13.1) (2019-01-29)
+
+
+### Bug Fixes
+
+* broke pagination with router change ([fc11c31](https://github.com/koombea/front-end-test-ntorres/commit/fc11c31))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.5...v0.13.0) (2019-01-29)
 
