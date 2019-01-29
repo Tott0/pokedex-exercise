@@ -1,7 +1,13 @@
 // tslint:disable-next-line:no-implicit-dependencies
 import { createBrowserHistory } from "history";
 import React, { Component } from "react";
-import { BrowserRouter as Link, Route, Router } from "react-router-dom";
+import {
+  BrowserRouter as Link,
+  Route,
+  Router,
+  Redirect,
+  Switch
+} from "react-router-dom";
 
 import "./App.scss";
 
@@ -12,7 +18,7 @@ import { store } from "../..";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchTypesIfNeeded, fetchPokemons } from "../../actions";
 
-const customHistory = createBrowserHistory();
+export const customHistory = createBrowserHistory();
 
 // asd
 /** asdasd */
@@ -22,16 +28,18 @@ class App extends Component {
       <Router history={customHistory}>
         <div className="App">
           <Header />
-          <Route exact path="/" component={PokedexIndex} />
-          <Route path="/pokemon/:name" component={PokedexDetail} />
+          <Switch>
+            <Route path="/home" component={PokedexIndex} />
+            <Route path="/pokemon/:name" component={PokedexDetail} />
+            <Redirect from="/" to="/home" />
+          </Switch>
         </div>
       </Router>
     );
   }
 
-  componentDidMount(){
+  componentDidMount() {
     (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchTypesIfNeeded());
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchPokemons());
   }
 }
 

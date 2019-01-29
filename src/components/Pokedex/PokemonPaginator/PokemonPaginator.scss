@@ -1,0 +1,7 @@
+@import './src/scss/variables.scss';
+.pokemonPaginator{
+  margin-top: 1em;
+  .row{
+    justify-content: flex-end;
+  }
+}

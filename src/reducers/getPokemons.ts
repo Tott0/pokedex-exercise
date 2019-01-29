@@ -1,12 +1,15 @@
 import {
+  SELECT_PAGE,
   REQUEST_POKEMON,
   RECEIVE_POKEMON,
   REQUEST_POKEMONS,
   RECEIVE_POKEMONS,
   RECEIVE_SEARCHED_POKEMONS,
   RECEIVE_POKEMON_BY_NAME,
-  UPDATE_SELECTED_POKEMON_TYPES
-} from "../actions";
+  UPDATE_SELECTED_POKEMON_TYPES,
+  DEFAULT_POKEMON_FETCH,
+  SET_POKEMONS_SOURCE
+} from "../constants";
 import { Pokemon, Type } from "../models/Pokemon.model";
 const getPokemons = (
   state = {
@@ -15,12 +18,19 @@ const getPokemons = (
     searchedPokemons: [],
     loadingPokemons: false,
     allPokemonsLoaded: false,
-    selectedType: Type
+    selectedType: Type,
+    page: 0,
+    totalPokemons: 0,
+    pokemonsSource: DEFAULT_POKEMON_FETCH
   },
   action: any
 ) => {
   const pokemons: Pokemon[] = [...state.pokemons];
   switch (action.type) {
+    case SELECT_PAGE:
+      return Object.assign({}, state, { page: action.page });
+      case SET_POKEMONS_SOURCE:
+      return Object.assign({}, state, { pokemonsSource: action.pokemonsSource });
     case RECEIVE_POKEMON_BY_NAME:
       return Object.assign({}, state, {
         pokemon: action.pokemon
@@ -30,7 +40,7 @@ const getPokemons = (
     case RECEIVE_POKEMONS:
       return Object.assign({}, state, {
         pokemons: action.pokemons,
-        lastUpdated: action.receivedAt
+        totalPokemons: action.totalPokemons
       });
     case RECEIVE_SEARCHED_POKEMONS:
       return Object.assign({}, state, {
@@ -57,8 +67,7 @@ const getPokemons = (
       return Object.assign({}, state, {
         pokemons: pokemons,
         allPokemonsLoaded: action.allPokemonsLoaded,
-        loadingPokemons: action.loadingPokemons,
-        lastUpdated: action.receivedAt
+        loadingPokemons: action.loadingPokemons
       });
     case UPDATE_SELECTED_POKEMON_TYPES:
       const { pokemon } = state;

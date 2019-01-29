@@ -2,25 +2,52 @@ import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
 import { Pokemon, Type } from "../models/Pokemon.model";
 import { fetchAllPokemonDetails, fetchPokemonApi } from "./pokemonDetails";
-import { NUMBER_ASC, NUMBER_DSC, NAME_ASC, NAME_DSC } from "./pokemonTypes";
+import {
+  NUMBER_ASC,
+  NUMBER_DSC,
+  NAME_ASC,
+  NAME_DSC,
+  REQUEST_POKEMONS,
+  RECEIVE_POKEMONS,
+  RECEIVE_SEARCHED_POKEMONS,
+  RECEIVE_POKEMON_BY_NAME,
+  POKEMONS_PER_PAGE,
+  SELECT_PAGE,
+  DEFAULT_POKEMON_FETCH,
+  TYPE_POKEMON_FETCH,
+  SET_POKEMONS_SOURCE
+} from "../constants";
 import { fetchAllAbilityDetails } from "./pokemonAbilities";
-export const REQUEST_POKEMONS = "REQUEST_POKEMONS";
-function requestPokemons() {
+import { fetchTypeDetailsApi, getPokemonsFromTypeApi } from "./pokemonTypes";
+
+function requestPokemons(page?: number) {
   return {
-    type: REQUEST_POKEMONS
+    type: REQUEST_POKEMONS,
+    page
   };
 }
 
-export const RECEIVE_POKEMONS = "RECEIVE_POKEMONS";
-function receivePokemons(pokemons: any[]) {
+export function setPokemonsSource(pokemonsSource: string) {
+  return {
+    type: SET_POKEMONS_SOURCE,
+    pokemonsSource
+  };
+}
+
+function receivePokemons(
+  pokemons: any[],
+  totalPokemons: number,
+  pokemonsSource = DEFAULT_POKEMON_FETCH
+) {
   return {
     type: RECEIVE_POKEMONS,
-    pokemons: pokemons,
+    pokemons,
+    totalPokemons,
+    pokemonsSource,
     receivedAt: Date.now()
   };
 }
 
-export const RECEIVE_SEARCHED_POKEMONS = "RECEIVE_SEARCHED_POKEMONS";
 function receiveSearchedPokemons(pokemons: any[]) {
   return {
     type: RECEIVE_SEARCHED_POKEMONS,
@@ -28,7 +55,6 @@ function receiveSearchedPokemons(pokemons: any[]) {
   };
 }
 
-export const RECEIVE_POKEMON_BY_NAME = "RECEIVE_POKEMON_BY_NAME";
 function receivePokemonByName(pokemon: Pokemon) {
   return {
     type: RECEIVE_POKEMON_BY_NAME,
@@ -36,30 +62,47 @@ function receivePokemonByName(pokemon: Pokemon) {
   };
 }
 
+export function selectPage(page: number) {
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
+    dispatch({
+      type: SELECT_PAGE,
+      page
+    });
+    console.log('from page')
+    const { pokemonsSource } = getState().getPokemons;
+    switch (pokemonsSource) {
+      case DEFAULT_POKEMON_FETCH:
+        dispatch(fetchPokemons());
+        break;
+      case TYPE_POKEMON_FETCH:
+        dispatch(fetchPokemonsFromType());
+        break;
+    }
+  };
+}
+
 export function getPokemonByName(name: string) {
-  // console.log(name);
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     return fetchPokemonsApi()
       .then((pokemons: Pokemon[]) => {
         const pokemon = pokemons.find((p: Pokemon) => {
           return p.name === name;
         });
-        if(pokemon){
+        if (pokemon) {
           if (pokemon.id) {
             return Promise.resolve(pokemon);
           }
-          if(pokemon.url){
+          if (pokemon.url) {
             return Promise.resolve(fetchPokemonApi(pokemon.url));
           }
         }
         return Promise.reject("NO POKEMON");
       })
       .then((pokemon: Pokemon) => {
-        dispatch(fetchAllAbilityDetails(pokemon))
+        dispatch(fetchAllAbilityDetails(pokemon));
         return pokemon;
       })
       .then((pokemon: Pokemon) => {
-        console.log(pokemon);
         if (pokemon.id) {
           dispatch(receivePokemonByName(pokemon));
         }
@@ -67,45 +110,18 @@ export function getPokemonByName(name: string) {
   };
 }
 
-function sortPokemons(sortedBy: string, p: Pokemon[]): Promise<Pokemon[]> {
-  return Promise.resolve(p).then(pokemons => {
-    return Promise.resolve(
-      pokemons.sort((a: Pokemon, b: Pokemon) => {
-        switch (sortedBy) {
-          case NUMBER_ASC:
-            return +("" + a.id) < +("" + b.id) ? -1 : 1;
-          case NUMBER_DSC:
-            return +("" + a.id) < +("" + b.id) ? 1 : -1;
-          case NAME_ASC:
-            return "" + a.name < "" + b.name ? -1 : 1;
-          case NAME_DSC:
-            return "" + a.name < "" + b.name ? 1 : -1;
-        }
-        return 0;
-      })
-    );
-  });
-}
-
-function filterPokemons(selectedType: Type, p: Pokemon[]): Promise<Pokemon[]> {
-  return Promise.resolve(p).then(pokemons => {
-    return pokemons.filter((pokemon: Pokemon) => {
-      if (pokemon.types) {
-        return pokemon.types.some(type => type.name === selectedType.name);
-      }
-      return false;
-    });
-  });
-}
-
 var pokemonsCache: Pokemon[];
+export function updatePokemonsCache(pokemon: Pokemon) {
+  const index = pokemonsCache.findIndex(p => p.name === pokemon.name);
+  pokemonsCache[index] = pokemon;
+}
 export function fetchPokemonsApi() {
   if (pokemonsCache) {
     return Promise.resolve(pokemonsCache);
   }
   return axios
     .get<any>(`https://pokeapi.co/api/v2/pokemon?limit=949`)
-    .then(res => {   
+    .then(res => {
       const data = res.data;
       const pokemons = data.results.map((r: Pokemon) => new Pokemon(r));
       pokemonsCache = pokemons;
@@ -114,58 +130,83 @@ export function fetchPokemonsApi() {
     .catch(err => console.error(err));
 }
 
-export function updatePokemonsCache(pokemon: Pokemon) {
-  const index = pokemonsCache.findIndex(p => p.name === pokemon.name);
-  pokemonsCache[index] = pokemon;
-}
-
-export function fetchPokemons() {
-  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
-    const { sortedBy, selectedType } = getState().getTypes;
-    dispatch(requestPokemons());
-    return fetchPokemonsApi()
-      .then((pokemons: Pokemon[]) => {
-        // sort pokemons
-        if (sortedBy) {
-          return Promise.resolve(sortPokemons(sortedBy, pokemons));
-        }
-        return Promise.resolve(pokemons);
-      })
-      .then((pokemons: Pokemon[]) => {
-        // filter pokemons
-        if (selectedType) {
-          return Promise.resolve(filterPokemons(selectedType, pokemons));
-        }
-        return Promise.resolve(pokemons);
-      })
-      .then((pokemons: Pokemon[]) => {
-        dispatch(receivePokemons(pokemons));
-        return Promise.resolve(pokemons);
-      })
-      .then((pokemons: Pokemon[]) => {
-        if(!getState().getPokemons.loadingPokemons){
-          // console.log(getState());
-          dispatch(fetchAllPokemonDetails(pokemons))
-        }
-      }
-      );
-  };
-}
-
 export function searchPokemons() {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     let { filterName } = getState().getTypes;
-    filterName = filterName ? filterName : "";
-    dispatch(requestPokemons());
+    filterName = filterName || "";
     return fetchPokemonsApi().then((pokemons: Pokemon[]) => {
       let filteredByName: Pokemon[] = [];
-      if(filterName){
+      if (filterName) {
         filteredByName = pokemons.filter((pokemon: Pokemon) => {
-          const name = ("" + pokemon.name).toLowerCase();
+          const name = `${pokemon.name}`.toLowerCase();
           return name.startsWith(filterName.toLowerCase());
         });
       }
       dispatch(receiveSearchedPokemons(filteredByName));
     });
   };
+}
+
+function treatPokemons(
+  pokemons: Pokemon[],
+  sortedBy: string,
+  page: number,
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<any> {
+  return Promise.resolve(pokemons)
+    .then((pokemons: Pokemon[]) =>
+      Promise.resolve(sortPokemons(sortedBy, pokemons))
+    )
+    .then((pokemons: Pokemon[]) => {
+      const pokemonsPage = pokemons.slice(
+        (page - 1) * POKEMONS_PER_PAGE,
+        page * POKEMONS_PER_PAGE
+      );
+      dispatch(receivePokemons(pokemonsPage, pokemons.length));
+      return Promise.resolve(pokemonsPage);
+    })
+    .then((pokemons: Pokemon[]) => {
+      dispatch(fetchAllPokemonDetails(pokemons));
+    });
+}
+export function fetchPokemons() {
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
+    const { sortedBy } = getState().getTypes;
+    const { page } = getState().getPokemons;
+    return fetchPokemonsApi().then(pokemons =>
+      treatPokemons(pokemons, sortedBy, page, dispatch)
+    );
+  };
+}
+
+function fetchPokemonsFromType() {
+  return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
+    const { sortedBy, selectedType } = getState().getTypes;
+    const { page } = getState().getPokemons;
+    return getPokemonsFromTypeApi(selectedType.url).then(pokemons =>
+      treatPokemons(pokemons, sortedBy, page, dispatch)
+    );
+  };
+}
+
+function sortPokemons(sortedBy: string, p: Pokemon[]): Promise<Pokemon[]> {
+  if (!sortedBy) {
+    return Promise.resolve(p);
+  }
+  const pokemons = [...p];
+  switch (sortedBy) {
+    default:
+    case NUMBER_ASC:
+      return Promise.resolve(pokemons);
+    case NUMBER_DSC:
+      return Promise.resolve(pokemons.reverse());
+    case NAME_ASC:
+      return Promise.resolve(
+        pokemons.sort((a, b) => (`${a.name}` < `${b.name}` ? -1 : 1))
+      );
+    case NAME_DSC:
+      return Promise.resolve(
+        pokemons.sort((a, b) => (`${a.name}` < `${b.name}` ? 1 : -1))
+      );
+  }
 }

@@ -1,16 +1,18 @@
 import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
-import { Type } from "../models/Pokemon.model";
-import { fetchPokemons, searchPokemons } from "./getPokemons";
+import { Type, Pokemon } from "../models/Pokemon.model";
+import { fetchPokemons, searchPokemons, selectPage, setPokemonsSource, getPokemonByName } from "./getPokemons";
+import { REQUEST_TYPES, RECEIVE_TYPES, SELECT_POKEMON_TYPE, SORT_POKEMONS_BY, FILTER_POKEMONS_NAME, UPDATE_SELECTED_POKEMON_TYPES, TYPE_POKEMON_FETCH, DEFAULT_POKEMON_FETCH } from "../constants";
+import { receivePokemon } from "./pokemonDetails";
 
-export const REQUEST_TYPES = "REQUEST_TYPES";
+
 export function requestTypes() {
   return {
     type: REQUEST_TYPES
   };
 }
 
-export const RECEIVE_TYPES = "RECEIVE_TYPES";
+
 export function receiveTypes(types: Type[]) {
   return {
     type: RECEIVE_TYPES,
@@ -19,33 +21,30 @@ export function receiveTypes(types: Type[]) {
   };
 }
 
-export const SELECT_POKEMON_TYPE = "SELECT_POKEMON_TYPE";
+
 export function selectPokemonType(selectedType: Type) {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     dispatch({
       type: SELECT_POKEMON_TYPE,
       selectedType
     });
-    dispatch(fetchPokemons());
+    console.log(selectedType);
+    dispatch(setPokemonsSource(selectedType ? TYPE_POKEMON_FETCH : DEFAULT_POKEMON_FETCH));
+    dispatch(selectPage(1));
   };
 }
 
-export const NUMBER_ASC = "NUMBER_ASC";
-export const NUMBER_DSC = "NUMBER_DSC";
-export const NAME_ASC = "NAME_ASC";
-export const NAME_DSC = "NAME_DSC";
-export const SORT_POKEMONS_BY = "SORT_POKEMONS_BY";
 export function sortPokemonsBy(sortedBy: string) {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     dispatch({
       type: SORT_POKEMONS_BY,
       sortedBy
     });
-    dispatch(fetchPokemons());
+    // dispatch(setPokemonsSource(DEFAULT_POKEMON_FETCH));
+    dispatch(selectPage(1));
   };
 }
 
-export const FILTER_POKEMONS_NAME = "FILTER_POKEMONS_NAME";
 export function filterPokemonsByName(filterName: string) {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     dispatch({
@@ -56,7 +55,6 @@ export function filterPokemonsByName(filterName: string) {
   };
 }
 
-export const UPDATE_SELECTED_POKEMON_TYPES = "UPDATE_SELECTED_POKEMON_TYPES";
 export function updateselectedPokemonTypes() {
   return (dispatch: ThunkDispatch<{}, {}, any>, getState: any) => {
     dispatch({
@@ -64,6 +62,22 @@ export function updateselectedPokemonTypes() {
     });
     dispatch(searchPokemons());
   };
+}
+
+export function getPokemonsFromTypeApi(url: string): Promise<Pokemon[]> {
+  return axios
+    .get<any>(url)
+    .then(async (res: any) => {
+      const data = res.data;
+      // console.log(data);
+      const pokemons = data.pokemon.map((dp: any) => new Pokemon(dp.pokemon));
+      return Promise.resolve(pokemons);
+    })
+    .then()
+    .catch(err => {
+      console.error(err);
+      return Promise.reject();
+    });
 }
 
 export function fetchTypeDetailsApi(url: string): Promise<Type> {
@@ -79,7 +93,6 @@ export function fetchTypeDetailsApi(url: string): Promise<Type> {
         url: url,
         damageRelations: damageRelations
       });
-      // console.log(type);
       return Promise.resolve(type);
     })
     .catch(err => {
@@ -92,6 +105,10 @@ var typesCache: Type[];
 export const getTypesArray = () => {
   return typesCache;
 };
+export function updateTypesCache(type: Type) {
+  const index = typesCache.findIndex(p => p.name === type.name);
+  typesCache[index] = type;
+}
 function fetchTypesApi(): Promise<Type[]> {
   if (typesCache) {
     return Promise.resolve(typesCache);
@@ -106,10 +123,6 @@ function fetchTypesApi(): Promise<Type[]> {
       return Promise.resolve(types);
     })
     .catch(err => console.error(err));
-}
-export function updateTypesCache(type: Type) {
-  const index = typesCache.findIndex(p => p.name === type.name);
-  typesCache[index] = type;
 }
 
 function fetchAllTypesDetails(index: number, types: Type[]) {

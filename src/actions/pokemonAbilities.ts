@@ -4,15 +4,14 @@ import { Type, Ability } from "../models/Pokemon.model";
 import { Pokemon } from "../models/Pokemon.model";
 import { updatePokemonsCache } from "./getPokemons";
 import { receivePokemon } from "./pokemonDetails";
+import { REQUEST_ABILITY, RECEIVE_ABILITY } from "../constants";
 
-export const REQUEST_ABILITY = "REQUEST_ABILITY";
 function requestAbility() {
   return {
     type: REQUEST_ABILITY
   };
 }
 
-export const RECEIVE_ABILITY = "RECEIVE_ABILITY";
 function receiveAbility(abiliy: Ability[]) {
   return {
     type: RECEIVE_ABILITY,

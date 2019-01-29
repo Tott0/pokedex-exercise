@@ -1,10 +1,11 @@
 import { ThunkDispatch } from "redux-thunk";
 import axios from "axios";
-import { Pokemon, Ability, Type } from "../models/Pokemon.model";
 import { updatePokemonsCache, fetchPokemonsApi } from "./getPokemons";
+import { Pokemon, Ability, Type } from "../models/Pokemon.model";
 import { getTypesArray } from "./pokemonTypes";
 import { fetchAllAbilityDetails } from "./pokemonAbilities";
-export const REQUEST_POKEMON = "REQUEST_POKEMON";
+import { REQUEST_POKEMON, RECEIVE_POKEMON } from "../constants";
+
 export function requestPokemon(url: string) {
   return {
     type: REQUEST_POKEMON,
@@ -12,8 +13,12 @@ export function requestPokemon(url: string) {
     url
   };
 }
-export const RECEIVE_POKEMON = "RECEIVE_POKEMON";
-export function receivePokemon(pokemon: Pokemon, loadingPokemons = true, allPokemonsLoaded = false) {
+
+export function receivePokemon(
+  pokemon: Pokemon,
+  loadingPokemons = true,
+  allPokemonsLoaded = false
+) {
   return {
     type: RECEIVE_POKEMON,
     pokemon: pokemon,
@@ -28,9 +33,7 @@ export async function fetchPokemonApi(url: string): Promise<Pokemon> {
     .get<any>(url)
     .then(res => {
       const data = res.data;
-      // console.log(data);
       const types = getTypesArray();
-      // console.log(types);
       const pokemon = new Pokemon({
         id: data.id,
         name: data.name,
@@ -38,16 +41,23 @@ export async function fetchPokemonApi(url: string): Promise<Pokemon> {
         img: data.sprites.front_default
           ? data.sprites.front_default
           : "https://vignette.wikia.nocookie.net/undertale-au/images/d/d8/MissingNo..png/revision/latest?cb=20170828074638",
-        types: data.types.sort((a: any, b: any) => a.slot < b.slot ? -1 : 1).map(
-          (dataTypes: any) => types.find(tp => ("" + tp.name).toLowerCase() === dataTypes.type.name)
-        ),
+        types: data.types
+          .sort((a: any, b: any) => (a.slot < b.slot ? -1 : 1))
+          .map((dataTypes: any) =>
+            types.find(
+              tp => ("" + tp.name).toLowerCase() === dataTypes.type.name
+            )
+          ),
         stats: data.stats.map((st: any) => ({
           name: st.stat.name,
           value: st.base_stat
         })),
-        abilities: data.abilities.sort((a: any, b: any) => a.slot < b.slot ? -1 : 1).map(
-          (a: any) => new Ability({ name: a.ability.name, url: a.ability.url })
-        )
+        abilities: data.abilities
+          .sort((a: any, b: any) => (a.slot < b.slot ? -1 : 1))
+          .map(
+            (a: any) =>
+              new Ability({ name: a.ability.name, url: a.ability.url })
+          )
       });
       return Promise.resolve(pokemon);
     })
@@ -65,21 +75,34 @@ function fetchAllPokemons(index: number, pokemons: Pokemon[]) {
   }
   const pokemon = pokemons[index];
   if (!pokemon) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllPokemons(++index, pokemons))};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {
+      dispatch(fetchAllPokemons(++index, pokemons));
+    };
   }
   const url = pokemon.url;
   if (!url || pokemon.id) {
-    return (dispatch: ThunkDispatch<{}, {}, any>) => {dispatch(fetchAllPokemons(++index, pokemons))};
+    return (dispatch: ThunkDispatch<{}, {}, any>) => {
+      dispatch(fetchAllPokemons(++index, pokemons));
+    };
   }
   return (dispatch: ThunkDispatch<{}, {}, any>) => {
-    dispatch(requestPokemon(url));
-    return fetchPokemonApi(url)
-      .then((pokemon: Pokemon) => {
-        updatePokemonsCache(pokemon);
-        dispatch(receivePokemon(pokemon, index < pokemons.length));
-        return Promise.resolve(pokemon);
-      })
-      .then(() => dispatch(fetchAllPokemons(++index, pokemons)));
+    fetchPokemonsApi().then(pokemonsFromApi => {
+      const pokemonFromCache = pokemonsFromApi.find((p: Pokemon) => {
+        return p.name === pokemon.name;
+      });
+      if (pokemonFromCache) {
+        if (pokemonFromCache.id) {
+          return Promise.resolve(pokemonFromCache);
+        }
+      }
+      return fetchPokemonApi(url)
+    })
+    .then((pokemon: Pokemon) => {
+      updatePokemonsCache(pokemon);
+      dispatch(receivePokemon(pokemon, index < pokemons.length));
+      return Promise.resolve(pokemon);
+    })
+    .then(() => dispatch(fetchAllPokemons(++index, pokemons)));
   };
 }
 

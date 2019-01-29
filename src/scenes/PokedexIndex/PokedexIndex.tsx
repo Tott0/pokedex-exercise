@@ -7,9 +7,20 @@ import { Alert } from "react-bootstrap";
 
 import FilterRow from "../../components/FilterRow/FilterRow";
 import Pokedex from "../../components/Pokedex/Pokedex";
+import { RouteComponentProps } from "react-router";
+import { selectPage } from "../../actions";
+import { ThunkDispatch } from "redux-thunk";
+import { store } from "../..";
 
-interface PropTypes {
+import queryString from "query-string";
+import PokemonPaginator from "../../components/Pokedex/PokemonPaginator/PokemonPaginator";
+
+interface RouteParams {
+  page?: string;
+}
+interface PropTypes extends RouteComponentProps<RouteParams> {
   allPokemonsLoaded?: boolean;
+  paginatorPage?: number;
 }
 class PokedexIndex extends Component<PropTypes> {
   public render() {
@@ -25,15 +36,43 @@ class PokedexIndex extends Component<PropTypes> {
         )}
         <FilterRow />
         <Pokedex />
+        <PokemonPaginator />
       </div>
     );
+  }
+
+  componentDidMount(){
+    const queryParams = queryString.parse(this.props.location.search);
+    if(queryParams){
+      const page = +`${queryParams.page}` > 0 ? +`${queryParams.page}` : 1;
+      const oldPage = this.props.paginatorPage || 0;
+      if(oldPage !== page){
+        (store.dispatch as ThunkDispatch<{}, {}, any>)(
+          selectPage(page)
+        );
+      }
+    }
+  }
+
+  componentWillReceiveProps(newProps: PropTypes){
+    const queryParams = queryString.parse(newProps.location.search);
+    if(queryParams){
+      const page = +(queryParams.page || 1);
+      const oldPage = +(newProps.paginatorPage || 1);
+      if(oldPage !== page){
+        (store.dispatch as ThunkDispatch<{}, {}, any>)(
+          selectPage(page)
+        );
+      }
+    }
   }
 }
 
 function mapStateToProps(state: any) {
-  const { getPokemons } = state;
+  const { page, allPokemonsLoaded} = state.getPokemons; 
   return {
-    allPokemonsLoaded: getPokemons.allPokemonsLoaded
+    allPokemonsLoaded,
+    paginatorPage: page
   };
 }
 

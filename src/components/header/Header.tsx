@@ -42,7 +42,9 @@ class Header extends Component<HeaderProps> {
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand>
-              <NavLink to="/">Pokedéx</NavLink>
+              <NavLink replace to={{ pathname: "/home", search: `?page=${1}` }}>
+                Pokedéx
+              </NavLink>
             </Navbar.Brand>
             <Form inline onSubmit={this.handleSubmit}>
               <Dropdown>

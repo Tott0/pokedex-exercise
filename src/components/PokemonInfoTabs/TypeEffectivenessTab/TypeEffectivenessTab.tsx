@@ -61,9 +61,10 @@ class TypeEffectivenessTab extends Component<PropTypes> {
         <Row noGutters>
           {dmgArray.map((dmg: number, index: number) => (
             <Col xs={6} sm={4} xl={3} key={`${index}`}>
+              {(typesArray[index] &&
               <span className="eff" style={this.getColorStyle(dmg)}>
                 {typesArray[index].name}: {dmg}%
-              </span>
+              </span>)}
             </Col>
           ))}
         </Row>

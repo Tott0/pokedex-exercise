@@ -16,15 +16,14 @@ import { store } from "../..";
 import {
   fetchTypesIfNeeded,
   selectPokemonType,
-  NUMBER_ASC,
-  NUMBER_DSC,
-  NAME_ASC,
-  NAME_DSC,
   sortPokemonsBy
 } from "../../actions";
 
+import { NUMBER_ASC, NUMBER_DSC, NAME_ASC, NAME_DSC } from "../../constants";
+
 import { ThunkDispatch } from "redux-thunk";
 import { Type } from "../../models/Pokemon.model";
+import { customHistory } from "../App/App";
 
 interface PropTypes {
   types?: Type[];
@@ -37,11 +36,13 @@ class FilterRow extends Component<PropTypes> {
     const selectedType = types[index];
     (store.dispatch as ThunkDispatch<{}, {}, any>)(
       selectPokemonType(selectedType)
-    );
+      );
+    customHistory.replace("/");
   }
 
   sortItemSelected(sortedBy: string) {
     (store.dispatch as ThunkDispatch<{}, {}, any>)(sortPokemonsBy(sortedBy));
+    customHistory.replace("/");
   }
 
   getSortTitle() {
@@ -132,10 +133,6 @@ class FilterRow extends Component<PropTypes> {
         </Container>
       </section>
     );
-  }
-
-  componentDidMount() {
-    (store.dispatch as ThunkDispatch<{}, {}, any>)(fetchTypesIfNeeded());
   }
 }
 

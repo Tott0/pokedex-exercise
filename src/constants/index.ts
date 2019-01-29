@@ -1,0 +1,35 @@
+// getPokemons.action.ts
+export const REQUEST_POKEMONS = "REQUEST_POKEMONS";
+export const RECEIVE_POKEMONS = "RECEIVE_POKEMONS";
+export const RECEIVE_SEARCHED_POKEMONS = "RECEIVE_SEARCHED_POKEMONS";
+export const RECEIVE_POKEMON_BY_NAME = "RECEIVE_POKEMON_BY_NAME";
+
+//pokemonAbilities.ts
+export const REQUEST_ABILITY = "REQUEST_ABILITY";
+export const RECEIVE_ABILITY = "RECEIVE_ABILITY";
+
+//pokemonDetails.ts
+export const REQUEST_POKEMON = "REQUEST_POKEMON";
+export const RECEIVE_POKEMON = "RECEIVE_POKEMON";
+
+//pokemonTypes.ts
+export const REQUEST_TYPES = "REQUEST_TYPES";
+export const RECEIVE_TYPES = "RECEIVE_TYPES";
+export const SELECT_POKEMON_TYPE = "SELECT_POKEMON_TYPE";
+
+//pokemonTypes.ts
+export const NUMBER_ASC = "NUMBER_ASC";
+export const NUMBER_DSC = "NUMBER_DSC";
+export const NAME_ASC = "NAME_ASC";
+export const NAME_DSC = "NAME_DSC";
+export const SORT_POKEMONS_BY = "SORT_POKEMONS_BY";
+export const FILTER_POKEMONS_NAME = "FILTER_POKEMONS_NAME";
+export const UPDATE_SELECTED_POKEMON_TYPES = "UPDATE_SELECTED_POKEMON_TYPES";
+
+//
+export const SELECT_PAGE = "SELECT_PAGE";
+export const POKEMONS_PER_PAGE = 25;
+
+export const SET_POKEMONS_SOURCE = "SET_POKEMONS_SOURCE";
+export const DEFAULT_POKEMON_FETCH = "DEFAULT_POKEMON_FETCH";
+export const TYPE_POKEMON_FETCH = "TYPE_POKEMON_FETCH";
