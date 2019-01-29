@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.5...v0.13.0) (2019-01-29)
+
+
+### Features
+
+* code review changes ([1f77461](https://github.com/koombea/front-end-test-ntorres/commit/1f77461))
+
+
+
 <a name="0.12.5"></a>
 ## [0.12.5](https://github.com/koombea/front-end-test-ntorres/compare/v0.12.4...v0.12.5) (2019-01-20)
 
