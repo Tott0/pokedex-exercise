@@ -68,7 +68,6 @@ export function selectPage(page: number) {
       type: SELECT_PAGE,
       page
     });
-    console.log('from page')
     const { pokemonsSource } = getState().getPokemons;
     switch (pokemonsSource) {
       case DEFAULT_POKEMON_FETCH:

@@ -55,7 +55,8 @@ class PokemonPaginator extends Component<PropTypes> {
               ) : (
                 <Link
                   className="page-link"
-                  to={{ pathname: "/", search: `?page=${1}` }}
+                  replace
+                  to={{ pathname: "/home", search: `?page=${1}` }}
                 >
                   <i className="fas fa-fast-backward" />
                 </Link>
@@ -72,7 +73,8 @@ class PokemonPaginator extends Component<PropTypes> {
               ) : (
                 <Link
                   className="page-link"
-                  to={{ pathname: "/", search: `?page=${page - 1}` }}
+                  replace
+                  to={{ pathname: "/home", search: `?page=${page - 1}` }}
                 >
                   <i className="fas fa-step-backward" />
                 </Link>
@@ -86,7 +88,8 @@ class PokemonPaginator extends Component<PropTypes> {
                   <NavLink
                     className="page-link"
                     activeClassName="selected"
-                    to={{ pathname: "/", search: `?page=${p}` }}
+                    replace
+                    to={{ pathname: "/home", search: `?page=${p}` }}
                   >
                     {p}
                   </NavLink>
@@ -104,7 +107,8 @@ class PokemonPaginator extends Component<PropTypes> {
               ) : (
                 <Link
                   className="page-link"
-                  to={{ pathname: "/", search: `?page=${page + 1}` }}
+                  replace
+                  to={{ pathname: "/home", search: `?page=${page + 1}` }}
                 >
                   <i className="fas fa-step-forward" />
                 </Link>
@@ -121,7 +125,8 @@ class PokemonPaginator extends Component<PropTypes> {
               ) : (
                 <Link
                   className="page-link"
-                  to={{ pathname: "/", search: `?page=${lastPage}` }}
+                  replace
+                  to={{ pathname: "/home", search: `?page=${lastPage}` }}
                 >
                   <i className="fas fa-step-forward" />
                 </Link>

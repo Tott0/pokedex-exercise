@@ -26,7 +26,6 @@ const getTypes = (
     case REQUEST_TYPES:
       return Object.assign({}, state);
     case RECEIVE_TYPES:
-      // console.log(action);
       return Object.assign({}, state, {
         types: action.types,
         lastUpdated: action.receivedAt

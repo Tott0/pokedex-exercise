@@ -63,7 +63,6 @@ const getPokemons = (
       if (i >= 0) {
         pokemons[i] = newPokemon;
       }
-      // console.log(action);
       return Object.assign({}, state, {
         pokemons: pokemons,
         allPokemonsLoaded: action.allPokemonsLoaded,

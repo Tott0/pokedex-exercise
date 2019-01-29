@@ -24,7 +24,6 @@ function fetchAbilityApi(url: string) {
   .get<any>(url)
   .then(res => {
     const data = res.data;
-    // console.log(data);
     const ability = new Ability({
       id: data.id,
       name: data.name,

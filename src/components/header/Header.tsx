@@ -31,7 +31,6 @@ class Header extends Component<HeaderProps> {
     const selectedPokemon = pokemons[index];
   }
   handleSubmit = (e: any) => {
-    console.log();
     e.preventDefault();
     e.stopPropagation();
   };

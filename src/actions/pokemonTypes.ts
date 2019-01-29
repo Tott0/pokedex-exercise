@@ -28,7 +28,6 @@ export function selectPokemonType(selectedType: Type) {
       type: SELECT_POKEMON_TYPE,
       selectedType
     });
-    console.log(selectedType);
     dispatch(setPokemonsSource(selectedType ? TYPE_POKEMON_FETCH : DEFAULT_POKEMON_FETCH));
     dispatch(selectPage(1));
   };
@@ -40,7 +39,6 @@ export function sortPokemonsBy(sortedBy: string) {
       type: SORT_POKEMONS_BY,
       sortedBy
     });
-    // dispatch(setPokemonsSource(DEFAULT_POKEMON_FETCH));
     dispatch(selectPage(1));
   };
 }
@@ -69,7 +67,6 @@ export function getPokemonsFromTypeApi(url: string): Promise<Pokemon[]> {
     .get<any>(url)
     .then(async (res: any) => {
       const data = res.data;
-      // console.log(data);
       const pokemons = data.pokemon.map((dp: any) => new Pokemon(dp.pokemon));
       return Promise.resolve(pokemons);
     })
@@ -85,7 +82,6 @@ export function fetchTypeDetailsApi(url: string): Promise<Type> {
     .get<any>(url)
     .then(async (res: any) => {
       const data = res.data;
-      // console.log(data);
       const damageRelations = await generateEffectivenessArray(data);
       const type = new Type({
         id: data.id,
@@ -119,7 +115,6 @@ function fetchTypesApi(): Promise<Type[]> {
       const data = res.data;
       const types = data.results.slice(0, 18).map((r: Type) => new Type(r));
       typesCache = types;
-      // console.log(types);
       return Promise.resolve(types);
     })
     .catch(err => console.error(err));
